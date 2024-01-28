@@ -88,7 +88,7 @@ let getFlipY = () => { return (store.config.styles.mirrorY ? -1 : 1) }
         <p v-if="content.type === 'text'" contenteditable="true" @input="editParagraph($event, index)"
           @blur="removeParagraph(index)">{{ content.data }}</p>
         <v-img v-if="content.type === 'image'" :width="`${content.config.width}%`" :id="`img-${index}`"
-          :src="content.data">
+          :src="content.data" class="my-2">
           <v-toolbar color="rgba(0, 0, 0, 0)" theme="dark">
             <template v-slot:append>
               <v-menu>
@@ -103,27 +103,6 @@ let getFlipY = () => { return (store.config.styles.mirrorY ? -1 : 1) }
                   </v-list-item>
                   <v-list-item value="1" @click="deleteImage(index)">
                     <v-list-item-title>Borrar</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item value="2">
-                    <v-menu>
-                      <template v-slot:activator="{ imgSize }">
-                        <v-list-item-title v-bind="imgSize">Tamaño</v-list-item-title>
-                      </template>
-                      <v-list>
-                        <v-list-item value="0" @click="editSizeImage(index, 25)">
-                          <v-list-item-title>25%</v-list-item-title>
-                        </v-list-item>
-                        <v-list-item value="1" @click="editSizeImage(index, 50)">
-                          <v-list-item-title>50%</v-list-item-title>
-                        </v-list-item>
-                        <v-list-item value="2" @click="editSizeImage(index, 75)">
-                          <v-list-item-title>75%</v-list-item-title>
-                        </v-list-item>
-                        <v-list-item value="3" @click="editSizeImage(index, 100)">
-                          <v-list-item-title>100%</v-list-item-title>
-                        </v-list-item>
-                      </v-list>
-                    </v-menu>
                   </v-list-item>
                 </v-list>
               </v-menu>
