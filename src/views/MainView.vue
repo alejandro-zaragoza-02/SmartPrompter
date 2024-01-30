@@ -10,10 +10,7 @@ let addParagraph = () => {
     type: 'text',
     data: 'Parrafo'
   })
-}
-
-let editParagraph = (evt, index) => {
-  store.contents[index].data = evt.target.innerText
+  console.log(store.contents)
 }
 
 let removeParagraph = (index) => {
@@ -73,7 +70,7 @@ let getFlipY = () => { return (store.config.styles.mirrorY ? -1 : 1) }
 
 <template>
   <Header />
-  <main class="d-flex flex-column justify-center">
+  <main>
     <div :style="{
       backgroundColor: store.config.styles.backgroundColor,
       textAlign: getAlign(),
@@ -85,8 +82,9 @@ let getFlipY = () => { return (store.config.styles.mirrorY ? -1 : 1) }
       paddingInline: store.config.styles.margin[0] + '%'
     }">
       <div v-for="(content, index) in store.contents">
-        <p v-if="content.type === 'text'" contenteditable="true" @input="editParagraph($event, index)"
-          @blur="removeParagraph(index)">{{ content.data }}</p>
+        <!-- <p v-if="content.type === 'text'" contenteditable="true" @input="editParagraph($event, index)"
+          @blur="removeParagraph(index)"></p> -->
+        <v-textarea v-if="content.type === 'text'" @blur="removeParagraph(index)" v-model="content.data"></v-textarea>
         <v-img v-if="content.type === 'image'" :width="`${content.config.width}%`" :id="`img-${index}`"
           :src="content.data" class="my-2">
           <v-toolbar color="rgba(0, 0, 0, 0)" theme="dark">
