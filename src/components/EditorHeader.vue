@@ -1,6 +1,7 @@
 <template>
   <header class="bg-grey-darken-3 d-flex justify-between pa-3">
     <h1>SmartPrompter</h1>
+    <v-btn color="primary" @click="$router.push('/player')">Iniciar</v-btn>
     <div class="d-flex flex-wrap align-center justify-right w-100">
       <v-select label="Modo" :items="['Continuo', 'Diapositivas']" v-model="store.config.styles.mode"
         hide-details></v-select>

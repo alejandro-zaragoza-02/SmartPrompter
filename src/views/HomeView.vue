@@ -31,7 +31,7 @@ const content = ref('');
         <v-col cols="12" xs="12" sm="5" class="pa-4">
           <div class="d-flex flex-column align-center">
             <v-img src="/src/assets/home/logo.png" width="200" height="200"></v-img>
-            <v-btn class="mt-4" @click="$router.push('/teleprompter')">Empezar a usar</v-btn>
+            <v-btn class="mt-4" @click="$router.push('/editor')">Empezar a usar</v-btn>
           </div>
         </v-col>
         <v-col cols="12" xs="12" sm="7" class="pa-4">
