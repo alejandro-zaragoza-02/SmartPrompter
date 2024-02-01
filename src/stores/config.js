@@ -2,10 +2,13 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useConfigStore = defineStore('config', () => {
-  const contents = ref([]);
+  const contents = ref([{
+    type: 'text',
+    data: ''
+  }]);
   const config = {
     styles: {
-      mode: ref('continuos'),
+      mode: ref('Continuo'),
       speed: ref(5),
       fontSize: ref(14),
       fontFamily: ref('Arial'),

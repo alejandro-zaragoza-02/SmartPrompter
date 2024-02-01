@@ -5,7 +5,7 @@ import { useConfigStore } from '@/stores/config'
 
 const store = useConfigStore()
 
-let addParagraph = () => {
+const addParagraph = () => {
   store.contents.push({
     type: 'text',
     data: 'Parrafo'
@@ -13,13 +13,13 @@ let addParagraph = () => {
   console.log(store.contents)
 }
 
-let removeParagraph = (index) => {
+const removeParagraph = (index) => {
   if (store.contents[index].data === '') {
     store.contents.splice(index, 1)
   }
 }
 
-let addImage = () => {
+const addImage = () => {
   store.contents.push({
     type: 'image',
     data: '/src/assets/editor/image.jpg',
@@ -29,7 +29,7 @@ let addImage = () => {
   })
 }
 
-let changeImage = (index) => {
+const changeImage = (index) => {
   let input = document.getElementById(`inpFile-${index}`)
   if (input.files && input.files[0]) {
     var reader = new FileReader();
@@ -40,15 +40,15 @@ let changeImage = (index) => {
   }
 }
 
-let editSizeImage = (index, size) => {
+const editSizeImage = (index, size) => {
   store.contents[index].config.size = size
 }
 
-let deleteImage = (index) => {
+const deleteImage = (index) => {
   store.contents.splice(index, 1)
 }
 
-let getAlign = () => {
+const getAlign = () => {
   switch (store.config.styles.textJustify) {
     case 0:
       return 'left'
@@ -63,8 +63,8 @@ let getAlign = () => {
   }
 }
 
-let getFlipX = () => { return (store.config.styles.mirrorX ? -1 : 1) }
-let getFlipY = () => { return (store.config.styles.mirrorY ? -1 : 1) }
+const getFlipX = () => { return (store.config.styles.mirrorX ? -1 : 1) }
+const getFlipY = () => { return (store.config.styles.mirrorY ? -1 : 1) }
 
 </script>
 
@@ -82,9 +82,7 @@ let getFlipY = () => { return (store.config.styles.mirrorY ? -1 : 1) }
       paddingInline: store.config.styles.margin[0] + '%'
     }">
       <div v-for="(content, index) in store.contents">
-        <!-- <p v-if="content.type === 'text'" contenteditable="true" @input="editParagraph($event, index)"
-          @blur="removeParagraph(index)"></p> -->
-        <v-textarea v-if="content.type === 'text'" @blur="removeParagraph(index)" v-model="content.data"></v-textarea>
+        <p v-if="content.type === 'text'" @blur="removeParagraph(index)">{{ content.data }}</p>
         <v-img v-if="content.type === 'image'" :width="`${content.config.width}%`" :id="`img-${index}`"
           :src="content.data" class="my-2">
           <v-toolbar color="rgba(0, 0, 0, 0)" theme="dark">
@@ -111,9 +109,9 @@ let getFlipY = () => { return (store.config.styles.mirrorY ? -1 : 1) }
           @change="changeImage(index)">
       </div>
     </div>
-    <div class="d-flex justify-center">
+    <!-- <div class="d-flex justify-center">
       <v-btn prepend-icon="mdi-plus" class="ma-4" @click="addParagraph">Añadir párrafo</v-btn>
       <v-btn prepend-icon="mdi-image" class="ma-4" @click="addImage()">Añadir imagen</v-btn>
-    </div>
+    </div> -->
   </main>
 </template>

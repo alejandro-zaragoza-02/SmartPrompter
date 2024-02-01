@@ -1,5 +1,8 @@
 <script setup>
+import { useConfigStore } from '@/stores/config';
 import { ref, provide } from 'vue';
+
+const store = useConfigStore()
 
 const cardsInfo = [
   {
@@ -20,8 +23,6 @@ const cardsInfo = [
   },
 ]
 
-const content = ref('');
-
 </script>
 
 <template>
@@ -35,7 +36,7 @@ const content = ref('');
           </div>
         </v-col>
         <v-col cols="12" xs="12" sm="7" class="pa-4">
-          <v-textarea v-model="content" class="caption" label="Escribe texto..." variant="outlined" rows="9" autofocus auto-grow></v-textarea>
+          <v-textarea v-model="store.contents[0].data" class="caption" label="Escribe texto..." variant="outlined" rows="9" autofocus auto-grow></v-textarea>
         </v-col>
       </v-row>
     </v-container>
