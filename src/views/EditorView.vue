@@ -2,21 +2,21 @@
 import { ref } from 'vue'
 import Header from '@/components/EditorHeader.vue'
 import { useConfigStore } from '@/stores/config'
+import draggable from 'vuedraggable'
 
 const store = useConfigStore()
 
+const drag = ref(false);
+
+const dragOptions = ref({
+  animation: 200,
+})
 const addParagraph = () => {
   store.contents.push({
     type: 'text',
     data: 'Parrafo'
   })
   console.log(store.contents)
-}
-
-const removeParagraph = (index) => {
-  if (store.contents[index].data === '') {
-    store.contents.splice(index, 1)
-  }
 }
 
 const addImage = () => {
@@ -71,47 +71,80 @@ const getFlipY = () => { return (store.config.styles.mirrorY ? -1 : 1) }
 <template>
   <Header />
   <main>
-    <div :style="{
-      backgroundColor: store.config.styles.backgroundColor,
-      textAlign: getAlign(),
-      fontSize: store.config.styles.fontSize + 'px',
-      lineHeight: store.config.styles.lineSpacing,
-      color: store.config.styles.textColor,
-      transform: `scale(${getFlipX()},${getFlipY()})`,
-      fontFamily: store.config.styles.fontFamily,
-      paddingInline: store.config.styles.margin[0] + '%'
-    }">
-      <div v-for="(content, index) in store.contents">
-        <p v-if="content.type === 'text'" @blur="removeParagraph(index)">{{ content.data }}</p>
-        <v-img v-if="content.type === 'image'" :width="`${content.config.width}%`" :id="`img-${index}`"
-          :src="content.data" class="my-2">
-          <v-toolbar color="rgba(0, 0, 0, 0)" theme="dark">
-            <template v-slot:append>
-              <v-menu>
-                <template v-slot:activator="{ props }">
-                  <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
+    <draggable v-model="store.contents" v-bind="{ dragOptions }" item-key="id">
+      <template #item="{ content, index }">
+        <li class="d-flex align-center">
+          <v-icon icon="mdi-drag" class="draggable mx-2"></v-icon>
+          <div class="w-100">
+            <v-textarea v-if="store.contents[index].type === 'text'" variant="outlined" class="my-2 list-group-item"
+              v-model="store.contents[index].data" rows="1" no-resize auto-grow hide-details></v-textarea>
+            <v-img v-if="store.contents[index].type === 'image'" :width="`${store.contents[index].config.width}%`"
+              :id="`img-${index}`" :src="store.contents[index].data" class="my-2">
+              <v-toolbar color="rgba(0, 0, 0, 0)" theme="dark">
+                <template v-slot:append>
+                  <v-menu>
+                    <template v-slot:activator="{ props }">
+                      <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
+                    </template>
+                    <v-list>
+                      <v-list-item value="0">
+                        <label :for="`inpFile-${index}`">
+                          <v-list-item-title>Cambiar</v-list-item-title>
+                        </label>
+                      </v-list-item>
+                      <v-list-item value="1" @click="deleteImage(index)">
+                        <v-list-item-title>Borrar</v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
                 </template>
-                <v-list>
-                  <v-list-item value="0">
-                    <label :for="`inpFile-${index}`">
-                      <v-list-item-title>Cambiar</v-list-item-title>
-                    </label>
-                  </v-list-item>
-                  <v-list-item value="1" @click="deleteImage(index)">
-                    <v-list-item-title>Borrar</v-list-item-title>
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-            </template>
-          </v-toolbar>
-        </v-img>
-        <input v-if="content.type === 'image'" v-show="false" :id="`inpFile-${index}`" type="file"
-          @change="changeImage(index)">
-      </div>
+              </v-toolbar>
+            </v-img>
+            <input v-if="store.contents[index].type === 'image'" v-show="false" :id="`inpFile-${index}`" type="file"
+              @change="changeImage(index)">
+          </div>
+          <v-icon class="mx-2" icon="mdi-close"></v-icon>
+        </li>
+      </template>
+    </draggable>
+    <div class="px-16 pt-2" tag="ul">
     </div>
-    <!-- <div class="d-flex justify-center">
+    <div class="d-flex justify-center">
       <v-btn prepend-icon="mdi-plus" class="ma-4" @click="addParagraph">Añadir párrafo</v-btn>
       <v-btn prepend-icon="mdi-image" class="ma-4" @click="addImage()">Añadir imagen</v-btn>
-    </div> -->
+    </div>
   </main>
 </template>
+
+<style>
+
+li {
+  list-style: none;
+}
+
+.flip-list-move {
+  transition: transform 0.5s;
+}
+
+.no-move {
+  transition: transform 0s;
+}
+
+.ghost {
+  opacity: 0.5;
+  background: #c8ebfb;
+}
+
+.list-group {
+  min-height: 20px;
+}
+
+.list-group-item {
+  cursor: move;
+}
+
+.list-group-item i {
+  cursor: pointer;
+}
+
+</style>
