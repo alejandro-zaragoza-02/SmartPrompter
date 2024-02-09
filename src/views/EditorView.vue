@@ -14,7 +14,6 @@ const addParagraph = () => {
     type: 'text',
     data: 'Parrafo'
   })
-  console.log(store.contents)
 }
 
 const addImage = () => {
@@ -32,7 +31,6 @@ const removeItem = (index) => {
 }
 
 const openFileExplorer = (index) => {
-  console.log('aaaa')
   const fileInput = document.getElementById(`inpFile-${index}`);
   if(fileInput){
     fileInput.click();
@@ -59,10 +57,10 @@ const editSizeImage = (index, width) => {
 <template>
   <Header />
   <main>
-    <draggable v-model="store.contents" item-key="id">
+    <draggable v-model="store.contents" item-key="id" handle=".handle">
       <template #item="{ content, index }">
         <li class="d-flex align-center">
-          <v-icon icon="mdi-drag" class="draggable mx-2"></v-icon>
+          <v-icon icon="mdi-drag" class="draggable mx-2 handle"></v-icon>
           <div class="w-100">
             <v-textarea v-if="store.contents[index].type === 'text'" variant="outlined" class="my-2 list-group-item"
               v-model="store.contents[index].data" rows="1" no-resize auto-grow hide-details></v-textarea>

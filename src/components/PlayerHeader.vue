@@ -7,9 +7,10 @@
         </v-col>
         <v-col class="text-center" cols="4">
           <div>
+            <v-btn @click="$router.push('/styler')" icon="mdi-arrow-left" color="primary" class="mx-2"></v-btn>
             <v-btn v-if="player.play" @click="player.play = false" icon="mdi-pause" color="primary" class="mx-2"></v-btn>
             <v-btn v-if="!player.play" @click="player.play = true" icon="mdi-play" color="primary" class="mx-2"></v-btn>
-            <v-btn @click="restart()" icon="mdi-restart" color="primary" class="mx-2"></v-btn>
+            <v-btn @click="player.restart()" icon="mdi-restart" color="primary" class="mx-2"></v-btn>
           </div>
         </v-col>
         <v-col class="text-end" cols="4">
@@ -24,22 +25,17 @@
 
 <script setup>
 import { usePlayerStore } from '@/stores/player';
+import { onMounted } from 'vue';
 
 const player = usePlayerStore()
 
-let counter;
-
-clearInterval(counter)
-
-counter = setInterval(() => {
-  if(player.play){
-    player.time = player.time + 1
-  }
-}, 1000)
-
-let restart = () => {
-  player.play = false
-  player.time = 0
-}
+onMounted(() => {
+  clearInterval(player.timeIntervalId)
+  player.timeIntervalId = setInterval(() => {
+    if(player.play){
+      player.time = player.time + 1
+    }
+  }, 1000)
+})
 
 </script>

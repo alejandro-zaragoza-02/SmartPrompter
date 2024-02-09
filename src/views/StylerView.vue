@@ -39,7 +39,12 @@ const getFlipY = () => { return (store.config.styles.mirrorY ? -1 : 1) }
       paddingInline: store.config.styles.margin[0] + '%',
     }" class="pt-4">
       <div v-for="(content, index) in store.contents">
-        <p v-if="content.type === 'text'">{{ content.data }}</p>
+        <p v-if="content.type === 'text'">
+          <p v-for="parragraph in content.data.split('\n')">
+            {{ parragraph }}<br>
+          </p>
+          <br>
+        </p>
         <v-img v-if="content.type === 'image'" :width="`${content.config.width}%`" :id="`img-${index}`"
           :src="content.data" class="my-2">
         </v-img>
