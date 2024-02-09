@@ -6,11 +6,9 @@ import draggable from 'vuedraggable'
 
 const store = useConfigStore()
 
-const drag = ref(false);
+const imgConfigDialog = ref(false)
+const lastImgConfigClicked = ref(0)
 
-const dragOptions = ref({
-  animation: 200,
-})
 const addParagraph = () => {
   store.contents.push({
     type: 'text',
@@ -22,11 +20,23 @@ const addParagraph = () => {
 const addImage = () => {
   store.contents.push({
     type: 'image',
-    data: '/src/assets/editor/image.jpg',
+    data: 'src/assets/editor/add-image.png',
     config: {
       width: 25
     }
   })
+}
+
+const removeItem = (index) => {
+  store.contents.splice(index, 1);
+}
+
+const openFileExplorer = (index) => {
+  console.log('aaaa')
+  const fileInput = document.getElementById(`inpFile-${index}`);
+  if(fileInput){
+    fileInput.click();
+  }
 }
 
 const changeImage = (index) => {
@@ -40,38 +50,16 @@ const changeImage = (index) => {
   }
 }
 
-const editSizeImage = (index, size) => {
-  store.contents[index].config.size = size
+const editSizeImage = (index, width) => {
+  store.contents[index].config.width = width
 }
-
-const deleteImage = (index) => {
-  store.contents.splice(index, 1)
-}
-
-const getAlign = () => {
-  switch (store.config.styles.textJustify) {
-    case 0:
-      return 'left'
-    case 1:
-      return 'center'
-    case 2:
-      return 'right'
-    case 3:
-      return 'justify'
-    default:
-      return 'left'
-  }
-}
-
-const getFlipX = () => { return (store.config.styles.mirrorX ? -1 : 1) }
-const getFlipY = () => { return (store.config.styles.mirrorY ? -1 : 1) }
 
 </script>
 
 <template>
   <Header />
   <main>
-    <draggable v-model="store.contents" v-bind="{ dragOptions }" item-key="id">
+    <draggable v-model="store.contents" item-key="id">
       <template #item="{ content, index }">
         <li class="d-flex align-center">
           <v-icon icon="mdi-drag" class="draggable mx-2"></v-icon>
@@ -79,41 +67,44 @@ const getFlipY = () => { return (store.config.styles.mirrorY ? -1 : 1) }
             <v-textarea v-if="store.contents[index].type === 'text'" variant="outlined" class="my-2 list-group-item"
               v-model="store.contents[index].data" rows="1" no-resize auto-grow hide-details></v-textarea>
             <v-img v-if="store.contents[index].type === 'image'" :width="`${store.contents[index].config.width}%`"
-              :id="`img-${index}`" :src="store.contents[index].data" class="my-2">
-              <v-toolbar color="rgba(0, 0, 0, 0)" theme="dark">
-                <template v-slot:append>
-                  <v-menu>
-                    <template v-slot:activator="{ props }">
-                      <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
-                    </template>
-                    <v-list>
-                      <v-list-item value="0">
-                        <label :for="`inpFile-${index}`">
-                          <v-list-item-title>Cambiar</v-list-item-title>
-                        </label>
-                      </v-list-item>
-                      <v-list-item value="1" @click="deleteImage(index)">
-                        <v-list-item-title>Borrar</v-list-item-title>
-                      </v-list-item>
-                    </v-list>
-                  </v-menu>
-                </template>
-              </v-toolbar>
+              :id="`img-${index}`" :src="store.contents[index].data" class="my-2 img" @click="openFileExplorer(index)">
             </v-img>
             <input v-if="store.contents[index].type === 'image'" v-show="false" :id="`inpFile-${index}`" type="file"
               @change="changeImage(index)">
           </div>
-          <v-icon class="mx-2" icon="mdi-close"></v-icon>
+          <div class="d-flex flex-column">
+            <v-icon v-if="store.contents[index].type === 'image'" class="mx-2" icon="mdi-cog" @click="imgConfigDialog = true; lastImgConfigClicked = index;"></v-icon>
+            <v-icon class="mx-2" icon="mdi-close" @click="removeItem(index)"></v-icon>
+          </div>
         </li>
       </template>
     </draggable>
-    <div class="px-16 pt-2" tag="ul">
-    </div>
-    <div class="d-flex justify-center">
+    <div class="d-flex justify-center mt-2">
       <v-btn prepend-icon="mdi-plus" class="ma-4" @click="addParagraph">Añadir párrafo</v-btn>
       <v-btn prepend-icon="mdi-image" class="ma-4" @click="addImage()">Añadir imagen</v-btn>
     </div>
   </main>
+  <v-dialog
+      v-model="imgConfigDialog"
+      max-width="600"
+    >
+      <v-card>
+        <v-card-title class="bg-blue-lighten-5">Configurar imagen</v-card-title>
+        <v-card-text>
+          <v-slider
+            v-model="store.contents[lastImgConfigClicked].config.width"
+            label="Ancho"
+            min="1"
+            max="100"
+            step="1"
+            thumb-label
+          ></v-slider>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn block @click="imgConfigDialog = false">Cerrar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 </template>
 
 <style>
@@ -122,29 +113,13 @@ li {
   list-style: none;
 }
 
-.flip-list-move {
-  transition: transform 0.5s;
+.draggable {
+  cursor: grab;
 }
 
-.no-move {
-  transition: transform 0s;
-}
-
-.ghost {
-  opacity: 0.5;
-  background: #c8ebfb;
-}
-
-.list-group {
-  min-height: 20px;
-}
-
-.list-group-item {
-  cursor: move;
-}
-
-.list-group-item i {
-  cursor: pointer;
+.img {
+  border: solid 1px #202020;
+  border-radius: .3em;
 }
 
 </style>

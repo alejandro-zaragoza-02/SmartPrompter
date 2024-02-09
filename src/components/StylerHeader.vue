@@ -21,57 +21,12 @@ const symmetrize = () => {
   auxMargin.value = store.config.styles.margin;
 }
 
-const downloadFile = () => {
-  const file = new Blob([JSON.stringify(store)], { type: 'application/json' })
-  const url = URL.createObjectURL(file)
-  const aElement = document.createElement('a')
-  aElement.setAttribute('download', 'config.json')
-  aElement.setAttribute('href', url)
-  aElement.setAttribute('target', '_blank')
-  aElement.click();
-  URL.revokeObjectURL(href)
-}
-
-const importFile = (evt) => {
-  let input = evt.target
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
-    reader.onload = function (e) {
-      const json = JSON.parse(e.target.result)
-      store.contents = json.contents
-      store.config = json.config
-      input.value = ''
-    }
-    reader.readAsText(input.files[0]);
-  }
-}
-
-const addParagraph = () => {
-  store.contents.push({
-    type: 'text',
-    data: 'Parrafo'
-  })
-  console.log(store.contents)
-}
-
-const addImage = () => {
-  store.contents.push({
-    type: 'image',
-    data: '/src/assets/editor/image.jpg',
-    config: {
-      width: 25
-    }
-  })
-  addParagraph();
-}
-
 </script>
 
 <template>
   <header class="bg-grey-darken-3 pa-3 header">
     <h1>SmartPrompter</h1>
-    <div v-if="!mobileDisplay" class="options">
-      <v-btn color="primary" @click="$router.push('/player')">Iniciar</v-btn>
+    <div class="options">
       <v-select label="Modo" :items="['Continuo', 'Diapositivas']" v-model="store.config.styles.mode" hide-details
         density="comfortable" class="mode" variant="solo"></v-select>
       <v-select :items="[1, 2, 3, 4, 5, 6, 7, 8, 9]" v-model="store.config.styles.speed" prepend-inner-icon="mdi-speedometer"
@@ -130,16 +85,9 @@ const addImage = () => {
         <v-icon icon="mdi-flip-vertical"></v-icon>
         <input type="checkbox" v-model="store.config.styles.mirrorY" style="display: none;">
       </label>
-      <v-icon icon="mdi-download" @click="downloadFile()"></v-icon>
-      <label class="clickable">
-        <v-icon icon="mdi-file-upload-outline"></v-icon>
-        <input v-show="false" type="file" @change="importFile($event)">
-      </label>
-      <v-icon icon="mdi-image" @click="addImage()"></v-icon>
       <v-icon icon="mdi-microphone"></v-icon>
-    </div>
-    <div v-if="mobileDisplay" class="options">
-      Movil
+      <v-btn color="blue-lighten-5" @click="$router.push('/editor')">Volver</v-btn>
+      <v-btn color="primary" @click="$router.push('/player')">Iniciar</v-btn>
     </div>
   </header>
   <div>

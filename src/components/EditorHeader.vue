@@ -35,12 +35,12 @@ const importFile = (evt) => {
   <header class="bg-grey-darken-3 pa-3 mb-3 header">
     <h1>SmartPrompter</h1>
     <div class="options">
-      <v-btn color="primary" @click="$router.push('/player')">Continuar</v-btn>
       <v-icon icon="mdi-download" @click="downloadFile()"></v-icon>
       <label class="clickable">
         <v-icon icon="mdi-file-upload-outline"></v-icon>
         <input v-show="false" type="file" @change="importFile($event)">
       </label>
+      <v-btn color="primary" @click="$router.push('/styler')">Continuar</v-btn>
     </div>
   </header>
 </template>
