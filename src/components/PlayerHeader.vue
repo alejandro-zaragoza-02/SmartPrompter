@@ -3,7 +3,10 @@
     <v-container fluid>
       <v-row justify="space-between" align="center">
         <v-col class="text-start" cols="4">
-          <h1>SmartPrompter</h1>
+          <div class="d-flex align-center clickable" @click="$router.push('/')">
+            <img src="../assets/logo.png" alt="" height="50" width="50" class="mx-2">
+            <h1>SmartPrompter</h1>
+          </div>
         </v-col>
         <v-col class="text-center" cols="4">
           <div>
@@ -32,7 +35,7 @@ const player = usePlayerStore()
 onMounted(() => {
   clearInterval(player.timeIntervalId)
   player.timeIntervalId = setInterval(() => {
-    if(player.play){
+    if (player.play) {
       player.time = player.time + 1
     }
   }, 1000)

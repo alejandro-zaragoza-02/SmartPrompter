@@ -33,7 +33,10 @@ const importFile = (evt) => {
 
 <template>
   <header class="bg-grey-darken-3 pa-3 mb-3 header">
-    <h1>SmartPrompter</h1>
+    <div class="d-flex align-center clickable" @click="$router.push('/')">
+      <img src="../assets/logo.png" alt="" height="50" width="50" class="mx-2">
+      <h1>SmartPrompter</h1>
+    </div>
     <div class="options">
       <v-icon icon="mdi-download" @click="downloadFile()"></v-icon>
       <label class="clickable">
