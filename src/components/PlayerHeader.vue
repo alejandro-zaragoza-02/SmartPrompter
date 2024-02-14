@@ -15,7 +15,7 @@
         </v-col>
         <v-col class="text-end" cols="4">
           <div>
-            Tiempo: {{ player.time }}
+            Tiempo: {{ player.time }} s
           </div>
         </v-col>
       </v-row>
