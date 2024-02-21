@@ -22,11 +22,15 @@ export const useConfigStore = defineStore('config', () => {
     },
     voice: {
       lang: ref('es'),
-      micro: ref(0),
+      micro: ref(''),
       recordVoice: ref(false),
       voiceSync: ref(false),
       recognitionThreshold: ref(0.3),
-      voiceCommands: ref([]),
+      voiceCommands: {
+        play: ref([]),
+        pause: ref([]),
+        restart: ref([]),
+      },
     }
   }
 

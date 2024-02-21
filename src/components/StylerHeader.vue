@@ -7,7 +7,23 @@ const store = useConfigStore()
 const colorFillDialog = ref(false)
 const colorTextDialog = ref(false)
 
-const mobileDisplay = ref(false)
+const voiceConfigDialog = ref(false)
+const audioDevices = ref([])
+
+navigator.mediaDevices.enumerateDevices()
+.then(function(devices) {
+  devices.forEach(function(device) {
+    if (device.kind === 'audioinput') {
+      audioDevices.value.push(device.label)
+      if(device.deviceId === 'default'){
+        store.config.voice.micro = device.label
+      }
+    }
+  });
+})
+.catch(function(err) {
+  console.log(err.name + ": " + err.message)
+});
 
 const auxMargin = ref(store.config.styles.margin)
 
@@ -32,10 +48,11 @@ const symmetrize = () => {
     <div class="options">
       <v-select label="Modo" :items="['Continuo', 'Diapositivas']" v-model="store.config.styles.mode" hide-details
         density="comfortable" class="mode" variant="solo"></v-select>
-      <v-select :items="[1, 2, 3, 4, 5, 6, 7, 8, 9]" v-model="store.config.styles.speed" prepend-inner-icon="mdi-speedometer"
-        hide-details density="comfortable" class="speed" variant="solo"></v-select>
+      <v-select :items="[1, 2, 3, 4, 5, 6, 7, 8, 9]" v-model="store.config.styles.speed"
+        prepend-inner-icon="mdi-speedometer" hide-details density="comfortable" class="speed" variant="solo"></v-select>
       <v-select :items="[8, 9, 10, 11, 12, 14, 18, 24, 30, 36, 48, 60, 72, 96]" v-model="store.config.styles.fontSize"
-        prepend-inner-icon="mdi-format-font-size-increase" hide-details density="comfortable" class="textSize" variant="solo"></v-select>
+        prepend-inner-icon="mdi-format-font-size-increase" hide-details density="comfortable" class="textSize"
+        variant="solo"></v-select>
       <v-select
         :items="['Roboto', 'Arial', 'Courier New', 'Calibri', 'Verdana', 'Georgia', 'Gill Sans', 'Segoe UI', 'Tahoma', 'Geneva', 'Cambria', 'Cochin', 'Impact']"
         v-model="store.config.styles.fontFamily" prepend-inner-icon="mdi-format-size" hide-details density="comfortable"
@@ -71,7 +88,8 @@ const symmetrize = () => {
         </v-btn>
       </div>
       <v-select v-model="store.config.styles.lineSpacing" :items="[0.5, 1.0, 1.5, 2.0, 2.5, 3.0]"
-        prepend-inner-icon="mdi-format-font-size-increase" hide-details density="comfortable" class="lineSpacing" variant="solo"></v-select>
+        prepend-inner-icon="mdi-format-font-size-increase" hide-details density="comfortable" class="lineSpacing"
+        variant="solo"></v-select>
       <div>
         <v-btn-toggle v-model="store.config.styles.textJustify" shaped mandatory rounded="">
           <v-btn size="small" icon="mdi-format-align-left"></v-btn>
@@ -88,7 +106,69 @@ const symmetrize = () => {
         <v-icon icon="mdi-flip-vertical"></v-icon>
         <input type="checkbox" v-model="store.config.styles.mirrorY" style="display: none;">
       </label>
-      <v-icon icon="mdi-microphone"></v-icon>
+      <v-icon icon="mdi-microphone" @click="voiceConfigDialog = true"></v-icon>
+      <v-dialog v-model="voiceConfigDialog" width="70%">
+        <v-card>
+          <v-card-title class="text-center mt-4 mb-3">
+            <span class="text-h5">Configuración de audio</span>
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <v-form>
+              <v-select label="Micrófono" :items="audioDevices" v-model="store.config.voice.micro" hide-details></v-select>
+              <v-row>
+                <v-col>
+                  <v-switch label="Grabar audio" color="primary" hide-details density="comfortable" v-model="store.config.voice.recordVoice"></v-switch>
+                </v-col>
+                <v-col>
+                  <v-switch label="Sincronización de voz" color="primary" hide-details density="comfortable" v-model="store.config.voice.voiceSync"></v-switch>
+                </v-col>
+              </v-row>
+              <v-text-field label="Umbral de error" v-model="store.config.voice.recognitionThreshold"></v-text-field>
+              <div class="text-h6 mb-4">Comandos de voz</div>
+              <v-row class="align-center px-4 pt-1">
+                <label class="w-25">Reproducir:</label>
+                <v-combobox
+                  clearable
+                  chips
+                  multiple
+                  hide-details
+                  density="comfortable"
+                  variant="outlined"
+                  v-model="store.config.voice.voiceCommands.play"
+                ></v-combobox>
+              </v-row>
+              <v-row class="align-center px-4 pt-1">
+                <label class="w-25">Pausar:</label>
+                <v-combobox
+                  clearable
+                  chips
+                  multiple
+                  hide-details
+                  density="comfortable"
+                  variant="outlined"
+                  v-model="store.config.voice.voiceCommands.pause"
+                ></v-combobox>
+              </v-row>
+              <v-row class="align-center px-4 pt-1">
+                <label class="w-25">Reiniciar:</label>
+                <v-combobox
+                  clearable
+                  chips
+                  multiple
+                  hide-details
+                  density="comfortable"
+                  variant="outlined"
+                  v-model="store.config.voice.voiceCommands.restart"
+                ></v-combobox>
+              </v-row>
+            </v-form>
+          </v-card-text>
+          <v-card-actions class="mt-8">
+            <v-btn color="primary" block @click="voiceConfigDialog = false" variant="outlined">Cerrar</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
       <v-btn color="blue-lighten-5" @click="$router.push('/editor')">Volver</v-btn>
       <v-btn color="primary" @click="$router.push('/player')">Iniciar</v-btn>
     </div>
@@ -99,7 +179,6 @@ const symmetrize = () => {
 </template>
 
 <style>
-
 .mode {
   width: 10em;
 }
@@ -139,5 +218,4 @@ const symmetrize = () => {
 .selected {
   color: rgb(129, 173, 240);
 }
-
 </style>
