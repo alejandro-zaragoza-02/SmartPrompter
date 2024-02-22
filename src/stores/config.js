@@ -21,7 +21,7 @@ export const useConfigStore = defineStore('config', () => {
       margin: ref([10,90])
     },
     voice: {
-      lang: ref('es'),
+      lang: ref('es-ES'),
       micro: ref(''),
       recordVoice: ref(false),
       voiceSync: ref(false),

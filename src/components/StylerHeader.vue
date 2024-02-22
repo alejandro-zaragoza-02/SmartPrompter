@@ -1,6 +1,7 @@
 <script setup>
 import { useConfigStore } from '@/stores/config'
 import { ref } from 'vue'
+import languages from '../helpers/getLanguages.js'
 
 const store = useConfigStore()
 
@@ -11,19 +12,19 @@ const voiceConfigDialog = ref(false)
 const audioDevices = ref([])
 
 navigator.mediaDevices.enumerateDevices()
-.then(function(devices) {
-  devices.forEach(function(device) {
-    if (device.kind === 'audioinput') {
-      audioDevices.value.push(device.label)
-      if(device.deviceId === 'default'){
-        store.config.voice.micro = device.label
+  .then(function (devices) {
+    devices.forEach(function (device) {
+      if (device.kind === 'audioinput') {
+        audioDevices.value.push(device.label)
+        if (device.deviceId === 'default') {
+          store.config.voice.micro = device.label
+        }
       }
-    }
+    });
+  })
+  .catch(function (err) {
+    console.log(err.name + ": " + err.message)
   });
-})
-.catch(function(err) {
-  console.log(err.name + ": " + err.message)
-});
 
 const auxMargin = ref(store.config.styles.margin)
 
@@ -35,6 +36,17 @@ const symmetrize = () => {
     store.config.styles.margin[0] = 100 - store.config.styles.margin[1];
   }
   auxMargin.value = store.config.styles.margin;
+}
+
+// Error no pilla el formulario
+
+const checkAudioConfigErrors = (event) => {
+  event.preventDefault();
+  if(event.target.validate()){
+    voiceConfigDialog.value = false
+  }else {
+    console.log('bromite')
+  }
 }
 
 </script>
@@ -107,67 +119,52 @@ const symmetrize = () => {
         <input type="checkbox" v-model="store.config.styles.mirrorY" style="display: none;">
       </label>
       <v-icon icon="mdi-microphone" @click="voiceConfigDialog = true"></v-icon>
-      <v-dialog v-model="voiceConfigDialog" width="70%">
-        <v-card>
-          <v-card-title class="text-center mt-4 mb-3">
-            <span class="text-h5">Configuración de audio</span>
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <v-form>
-              <v-select label="Micrófono" :items="audioDevices" v-model="store.config.voice.micro" hide-details></v-select>
-              <v-row>
-                <v-col>
-                  <v-switch label="Grabar audio" color="primary" hide-details density="comfortable" v-model="store.config.voice.recordVoice"></v-switch>
+      <v-dialog v-model="voiceConfigDialog" width="70%" persistent>
+        <v-form @submit="checkAudioConfigErrors($event)" ref="audioConfigForm" validate-on="submit">
+          <v-card>
+            <v-card-title class="text-center mt-4 mb-3">
+              <span class="text-h5">Configuración de audio</span>
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text>
+              <v-select label="Micrófono" variant="outlined" :items="audioDevices"
+                v-model="store.config.voice.micro"></v-select>
+              <v-autocomplete label="Idioma" variant="outlined" :items="languages" item-title="title" item-value="code"
+                v-model="store.config.voice.lang"></v-autocomplete>
+              <v-switch label="Grabar audio" color="primary" hide-details density="comfortable"
+                v-model="store.config.voice.recordVoice"></v-switch>
+              <v-row class="flex-wrap">
+                <v-col cols="auto">
+                  <v-switch label="Sincronización de voz" color="primary" hide-details density="comfortable"
+                    v-model="store.config.voice.voiceSync"></v-switch>
                 </v-col>
-                <v-col>
-                  <v-switch label="Sincronización de voz" color="primary" hide-details density="comfortable" v-model="store.config.voice.voiceSync"></v-switch>
+                <v-col v-if="store.config.voice.voiceSync" cols="auto" style="width: 10em;">
+                  <v-text-field label="Umbral de error (0 - 1)" v-model="store.config.voice.recognitionThreshold"
+                    hide-details density="comfortable" variant="underlined"></v-text-field>
                 </v-col>
               </v-row>
-              <v-text-field label="Umbral de error" v-model="store.config.voice.recognitionThreshold"></v-text-field>
-              <div class="text-h6 mb-4">Comandos de voz</div>
+              <div class="text-h6 my-4">Comandos de voz</div>
               <v-row class="align-center px-4 pt-1">
                 <label class="w-25">Reproducir:</label>
-                <v-combobox
-                  clearable
-                  chips
-                  multiple
-                  hide-details
-                  density="comfortable"
-                  variant="outlined"
-                  v-model="store.config.voice.voiceCommands.play"
-                ></v-combobox>
+                <v-combobox clearable chips multiple hide-details density="comfortable" variant="outlined"
+                  v-model="store.config.voice.voiceCommands.play"></v-combobox>
               </v-row>
               <v-row class="align-center px-4 pt-1">
                 <label class="w-25">Pausar:</label>
-                <v-combobox
-                  clearable
-                  chips
-                  multiple
-                  hide-details
-                  density="comfortable"
-                  variant="outlined"
-                  v-model="store.config.voice.voiceCommands.pause"
-                ></v-combobox>
+                <v-combobox clearable chips multiple hide-details density="comfortable" variant="outlined"
+                  v-model="store.config.voice.voiceCommands.pause"></v-combobox>
               </v-row>
               <v-row class="align-center px-4 pt-1">
                 <label class="w-25">Reiniciar:</label>
-                <v-combobox
-                  clearable
-                  chips
-                  multiple
-                  hide-details
-                  density="comfortable"
-                  variant="outlined"
-                  v-model="store.config.voice.voiceCommands.restart"
-                ></v-combobox>
+                <v-combobox clearable chips multiple hide-details density="comfortable" variant="outlined"
+                  v-model="store.config.voice.voiceCommands.restart"></v-combobox>
               </v-row>
-            </v-form>
-          </v-card-text>
-          <v-card-actions class="mt-8">
-            <v-btn color="primary" block @click="voiceConfigDialog = false" variant="outlined">Cerrar</v-btn>
-          </v-card-actions>
-        </v-card>
+            </v-card-text>
+            <v-card-actions class="mt-8">
+              <v-btn color="primary" block type="submit" variant="outlined">Cerrar</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-form>
       </v-dialog>
       <v-btn color="blue-lighten-5" @click="$router.push('/editor')">Volver</v-btn>
       <v-btn color="primary" @click="$router.push('/player')">Iniciar</v-btn>
