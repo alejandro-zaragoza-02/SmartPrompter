@@ -8,6 +8,8 @@ const store = useConfigStore()
 const colorFillDialog = ref(false)
 const colorTextDialog = ref(false)
 
+const audioConfigForm = ref(null);
+
 const voiceConfigDialog = ref(false)
 const audioDevices = ref([])
 
@@ -38,14 +40,10 @@ const symmetrize = () => {
   auxMargin.value = store.config.styles.margin;
 }
 
-// Error no pilla el formulario
-
-const checkAudioConfigErrors = (event) => {
-  event.preventDefault();
-  if(event.target.validate()){
+const checkAudioConfigErrors = async () => {
+  const validation = await audioConfigForm.value.validate();
+  if (validation.valid) {
     voiceConfigDialog.value = false
-  }else {
-    console.log('bromite')
   }
 }
 
@@ -120,7 +118,7 @@ const checkAudioConfigErrors = (event) => {
       </label>
       <v-icon icon="mdi-microphone" @click="voiceConfigDialog = true"></v-icon>
       <v-dialog v-model="voiceConfigDialog" width="70%" persistent>
-        <v-form @submit="checkAudioConfigErrors($event)" ref="audioConfigForm" validate-on="submit">
+        <v-form @submit.prevent="checkAudioConfigErrors()" ref="audioConfigForm" validate-on="input">
           <v-card>
             <v-card-title class="text-center mt-4 mb-3">
               <span class="text-h5">Configuración de audio</span>
@@ -130,7 +128,10 @@ const checkAudioConfigErrors = (event) => {
               <v-select label="Micrófono" variant="outlined" :items="audioDevices"
                 v-model="store.config.voice.micro"></v-select>
               <v-autocomplete label="Idioma" variant="outlined" :items="languages" item-title="title" item-value="code"
-                v-model="store.config.voice.lang"></v-autocomplete>
+                v-model="store.config.voice.lang" :rules="[
+                  (val) =>
+                    (val && val.length > 0) || 'Debe seleccionar un idioma',
+                ]"></v-autocomplete>
               <v-switch label="Grabar audio" color="primary" hide-details density="comfortable"
                 v-model="store.config.voice.recordVoice"></v-switch>
               <v-row class="flex-wrap">
