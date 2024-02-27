@@ -56,7 +56,7 @@ const checkAudioConfigErrors = async () => {
       <h1>SmartPrompter</h1>
     </div>
     <div class="options">
-      <v-select label="Modo" :items="['Continuo', 'Diapositivas']" v-model="store.config.styles.mode" hide-details
+      <v-select label="Modo" :items="['Continuo', 'Diapositivas', 'Reconocimiento de voz']" v-model="store.config.styles.mode" hide-details
         density="comfortable" class="mode" variant="solo"></v-select>
       <v-select :items="[1, 2, 3, 4, 5, 6, 7, 8, 9]" v-model="store.config.styles.speed"
         prepend-inner-icon="mdi-speedometer" hide-details density="comfortable" class="speed" variant="solo"></v-select>

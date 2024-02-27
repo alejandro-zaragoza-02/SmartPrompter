@@ -4,7 +4,10 @@ import { defineStore } from 'pinia'
 export const useConfigStore = defineStore('config', () => {
   const contents = ref([{
     type: 'text',
-    data: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus pellentesque aliquam. Donec malesuada nulla sed orci vehicula tincidunt. Suspendisse at diam at neque consequat convallis. Duis tincidunt ultricies dolor, et dictum odio cursus vel. Integer ultrices metus quis dapibus finibus. Nam at sagittis nibh. Sed quis posuere arcu. Nullam sollicitudin maximus varius. Vestibulum dictum risus at urna rutrum viverra. Fusce aliquet, leo in ultrices auctor, arcu tortor ultricies ante, in viverra diam est nec justo. Nam vel leo sed nulla malesuada sodales eu vulputate arcu. Nam accumsan vulputate bibendum. Aenean eu auctor nunc. Aliquam erat volutpat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam sit amet tortor maximus, laoreet ipsum in, tristique est.'
+    data: 'El teleprónter​ (en inglés teleprompter, también llamado teleapuntador, autocue o cue por influencia del nombre de la principal empresa fabricante) es un aparato electrónico que refleja el texto, ya sea noticias, canciones... previamente cargado en una computadora, en un cristal transparente que se sitúa en la parte frontal de una cámara.'
+  },{
+    type: 'text',
+    data: 'En algunos casos se controlan a través de un pedal en los pies del presentador que, al pisarlo, hace avanzar el texto y, si deja de pisarlo, este se detiene. De este modo, el sujeto puede leer con comodidad y a su ritmo. En otras ocasiones, es controlado por un operador que debe llevar el ritmo del narrador, para que la lectura se note natural y pausada. Por lo regular, debe estar instalado en todas las cámaras que se usan a la hora de una transmisión.'
   }]);
   const config = {
     styles: {
