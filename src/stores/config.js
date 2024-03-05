@@ -11,7 +11,7 @@ export const useConfigStore = defineStore('config', () => {
   }]);
   const config = {
     styles: {
-      mode: ref('Continuo'),
+      mode: ref('Reconocimiento de voz'),
       speed: ref(5),
       fontSize: ref(48),
       fontFamily: ref('Arial'),
@@ -29,6 +29,7 @@ export const useConfigStore = defineStore('config', () => {
       recordVoice: ref(false),
       voiceSync: ref(false),
       recognitionThreshold: ref(0.3),
+      wordWindow: ref(5),
       voiceCommands: {
         play: ref([]),
         pause: ref([]),

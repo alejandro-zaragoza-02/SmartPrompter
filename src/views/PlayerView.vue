@@ -62,7 +62,7 @@ const initVoiceRecognition = () => {
   })
   if(grammarWords !== ''){
     grammarWords = grammarWords.substring(0, grammarWords.length - 3)
-    var speechRecognitionList = new webkitSpeechGrammarList();
+    var speechRecognitionList = new webkitSpeechGrammarList()
     var grammar = '#JSGF V1.0; grammar palabras; public <palabra> = ' + grammarWords + ' ;'
     speechRecognitionList.addFromString(grammar, 1);
     recognition.grammars = speechRecognitionList;
@@ -70,32 +70,15 @@ const initVoiceRecognition = () => {
   recognition.start();
 
   let lastTranscription = ''
-  let lastText = ''
-  const pointer = {
-    parragraph: 0,
-    word: 0
-  }
 
   recognition.onresult = function(event) {
     if(!event.results[0].isFinal){
-
       let transcription = event.results[0][0].transcript
       let text = transcription.replace(lastTranscription, '')
-      let lastWord = lastText + text
       lastTranscription = transcription
-      lastText = text
-      
-      if(checkWord(text, pointer)) return
-      
-      if(checkWord(lastWord, pointer)) return
-      
       let words = text.split(' ')
-      words.forEach(wordListen => {
-        if(wordListen === '') return
-        checkWord(wordListen, pointer)
-      })
-      
-      
+      checkText(words)
+
     }else{
       //console.log('Final: ', event.results[0][0].transcript)
       // Corregir palabras anteriores
@@ -107,28 +90,52 @@ const initVoiceRecognition = () => {
   }
 }
 
-const checkWord = (wordListen, pointer) => {
-  const wordWanted = store.contents[pointer.parragraph].data.split(' ')[pointer.word].replace(/[^a-zA-Z0-9\u00C0-\u00FF]/g,'').toUpperCase()
-  console.log('Word listen:', wordListen)
-  console.log('Word wanted:', wordWanted)
-  wordListen = wordListen.replace(/[^a-zA-Z0-9\u00C0-\u00FF]/g,'').toUpperCase()
-  if (levenshtein(wordListen, wordWanted) <= 3) {
-    const wordElement = document.getElementById(`word-${pointer.parragraph}-${pointer.word}`)
-    wordElement.classList.add('said')
-    if (store.contents[pointer.parragraph].data.split(' ').length > pointer.word + 1) {
-      pointer.word++
-    } else {
-      if (store.contents.length > pointer.parragraph + 1) {
-        pointer.parragraph++
-        pointer.word = 0
-      } else {
-        console.log('FIN')
+const checkText = (words) => {
+  for (let index = 0; index < 5; index++) {
+    const wordTarget = getWord(player.pointer, index)
+    words.forEach((wordListen, index) => {
+      if (wordListen !== '') {
+        console.log(wordListen, wordTarget, checkWord(wordListen, wordTarget))
+        if (checkWord(wordListen, wordTarget)) {
+          nextPointer()
+          const wordsLeft = words.splice(index, 1)
+          if(wordsLeft.length > 0){
+            console.log(wordsLeft, player.pointer)
+            checkText(wordsLeft)
+          }
+          return
+        }
       }
-    }
-  }else{
-    return false
+    })
   }
-  return true
+}
+
+const getWord = (pointer, amount) => {
+  const difference = player.pointer.word + amount - store.contents[player.pointer.parragraph].length
+  const newPointer = { ...player.pointer };
+  if(difference >= 0){
+    newPointer.parragraph++
+    newPointer.word = difference
+  }else{
+    newPointer.word += amount
+  }
+  const wordWanted = store.contents[newPointer.parragraph].data.split(' ')[newPointer.word].replace(/[^a-zA-Z0-9\u00C0-\u00FF]/g,'').toUpperCase()
+  return wordWanted
+}
+
+const nextPointer = () => {
+  const difference = player.pointer.word + 1 - store.contents[player.pointer.parragraph].length
+  if(difference >= 0){
+    player.pointer.parragraph++
+    player.pointer.word = difference
+  }else{
+    player.pointer.word += 1
+  }
+}
+
+const checkWord = (wordListen, wordWanted) => {
+  wordListen = wordListen.replace(/[^a-zA-Z0-9\u00C0-\u00FF]/g,'').toUpperCase()
+  return levenshtein(wordListen, wordWanted) <= 3
 }
 
 

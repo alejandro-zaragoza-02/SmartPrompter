@@ -5,6 +5,10 @@ export const usePlayerStore = defineStore('player', () => {
   
   const play = ref(false)
   const time = ref(0)
+  const pointer = ref({
+    parragraph: 0,
+    word: 0
+  })
   const scrollTop = ref(0)
   const scrollIntervalId = ref(0)
   const timeIntervalId = ref(0)
@@ -13,7 +17,9 @@ export const usePlayerStore = defineStore('player', () => {
     play.value = 0
     time.value = 0
     scrollTop.value = 0
+    pointer.value.parragraph = 0
+    pointer.value.text = 0
   }
 
-  return { play, time, scrollTop, scrollIntervalId, timeIntervalId, restart }
+  return { play, time, pointer, scrollTop, scrollIntervalId, timeIntervalId, restart }
 })
