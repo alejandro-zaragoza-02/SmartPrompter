@@ -32,17 +32,19 @@ const importFile = (evt) => {
 </script>
 
 <template>
-  <header class="bg-grey-darken-3 pa-3 mb-3 header">
+  <header class="bg-grey-darken-3 pa-3 mb-3 editor-header">
     <div class="d-flex align-center clickable" @click="$router.push('/')">
       <img src="../assets/logo.png" alt="" height="50" width="50" class="mx-2">
       <h1>SmartPrompter</h1>
     </div>
-    <div class="options">
+    <div class="editor-options">
       <v-icon icon="mdi-download" @click="downloadFile()"></v-icon>
       <label class="clickable">
         <v-icon icon="mdi-file-upload-outline"></v-icon>
         <input v-show="false" type="file" @change="importFile($event)">
       </label>
+      <v-select label="Modo" :items="['Continuo', 'Diapositivas', 'Reconocimiento de voz']" v-model="store.config.styles.mode" hide-details
+        density="compact" class="mode" variant="solo"></v-select>
       <v-btn color="primary" @click="$router.push('/styler')">Continuar</v-btn>
     </div>
   </header>
@@ -50,14 +52,15 @@ const importFile = (evt) => {
 
 <style>
 
-.header {
+.editor-header {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
-.options {
+.editor-options {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

@@ -35,7 +35,7 @@ const autoScroll = () => {
       player.intervalId = setInterval(startModeContinuos, 100 / store.config.styles.speed)
       break
     case 'Diapositivas':
-      player.intervalId = setInterval(startModePowerPoint, store.config.styles.speed * 10)
+      
       break
     case 'Reconocimiento de voz':
       initVoiceRecognition()
@@ -91,26 +91,37 @@ const initVoiceRecognition = () => {
 }
 
 const checkText = (words) => {
-  for (let index = 0; index < 5; index++) {
-    const wordTarget = getWord(player.pointer, index)
+  let found = false
+  let wordsLeft = []
+  for (let iWordTarget = 0; iWordTarget < 5; iWordTarget++) {
+    if(found) return
+    const wordTarget = getWord(iWordTarget)
     words.forEach((wordListen, index) => {
       if (wordListen !== '') {
         console.log(wordListen, wordTarget, checkWord(wordListen, wordTarget))
         if (checkWord(wordListen, wordTarget)) {
-          nextPointer()
-          const wordsLeft = words.splice(index, 1)
-          if(wordsLeft.length > 0){
-            console.log(wordsLeft, player.pointer)
-            checkText(wordsLeft)
+          for (let i = 0; i <= iWordTarget; i++) {
+            console.log(i)
+            paintWord()
+            nextPointer()
           }
-          return
+          wordsLeft = (words.length > 1) ? words.splice(index, 1) : []
+          found = true
         }
       }
     })
   }
+  if(wordsLeft.length > 0){
+    checkText(wordsLeft)
+  }
 }
 
-const getWord = (pointer, amount) => {
+const paintWord = () => {
+  const span = document.getElementById(`word-${player.pointer.parragraph}-${player.pointer.word}`)
+  span.classList.add('said')
+}
+
+const getWord = (amount) => {
   const difference = player.pointer.word + amount - store.contents[player.pointer.parragraph].length
   const newPointer = { ...player.pointer };
   if(difference >= 0){
@@ -123,19 +134,19 @@ const getWord = (pointer, amount) => {
   return wordWanted
 }
 
-const nextPointer = () => {
-  const difference = player.pointer.word + 1 - store.contents[player.pointer.parragraph].length
+const nextPointer = (amount = 1) => {
+  const difference = player.pointer.word + amount - store.contents[player.pointer.parragraph].length
   if(difference >= 0){
     player.pointer.parragraph++
     player.pointer.word = difference
   }else{
-    player.pointer.word += 1
+    player.pointer.word += amount
   }
 }
 
 const checkWord = (wordListen, wordWanted) => {
   wordListen = wordListen.replace(/[^a-zA-Z0-9\u00C0-\u00FF]/g,'').toUpperCase()
-  return levenshtein(wordListen, wordWanted) <= 3
+  return levenshtein(wordListen, wordWanted) <= Math.ceil(wordWanted.length / 3)
 }
 
 

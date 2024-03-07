@@ -51,21 +51,32 @@ const checkAudioConfigErrors = async () => {
 
 <template>
   <header class="bg-grey-darken-3 pa-3 header">
-    <div class="d-flex align-center clickable" @click="$router.push('/')">
-      <img src="../assets/logo.png" alt="" height="50" width="50" class="mx-2">
-      <h1>SmartPrompter</h1>
+    <div class="d-flex justify-space-between w-100">
+      <div class="d-flex align-center clickable" @click="$router.push('/')">
+        <img src="../assets/logo.png" alt="" height="50" width="50" class="mx-2">
+        <h1>SmartPrompter</h1>
+      </div>
+      <div>
+        <v-btn class="mr-4" color="blue-lighten-5" @click="$router.push('/editor')">Volver</v-btn>
+        <v-btn color="primary" @click="$router.push('/player')">Iniciar</v-btn>
+      </div>
     </div>
     <div class="options">
-      <v-select label="Modo" :items="['Continuo', 'Diapositivas', 'Reconocimiento de voz']" v-model="store.config.styles.mode" hide-details
-        density="comfortable" class="mode" variant="solo"></v-select>
-      <v-select :items="[1, 2, 3, 4, 5, 6, 7, 8, 9]" v-model="store.config.styles.speed"
-        prepend-inner-icon="mdi-speedometer" hide-details density="comfortable" class="speed" variant="solo"></v-select>
+      <v-select v-if="store.config.styles.mode === 'Continuo'" :items="[1, 2, 3, 4, 5, 6, 7, 8, 9]" v-model="store.config.styles.speed"
+        prepend-inner-icon="mdi-speedometer" hide-details density="compact" class="speed" variant="solo"></v-select>
+      <v-select v-if="store.config.styles.mode === 'Reconocimiento de voz'" :items="[0.2, 0.3, 0.4]" v-model="store.config.voice.recognitionThreshold"
+        prepend-inner-icon="mdi-unfold-more-vertical" hide-details density="compact" class="speed" variant="solo"></v-select>
+      <div v-if="store.config.styles.mode === 'Diapositivas'" class="d-flex">
+        <v-icon icon="mdi-chevron-left"></v-icon>
+        <p class="px-2">{{ store.config.styles.slide }}</p>
+        <v-icon icon="mdi-chevron-right"></v-icon>
+      </div>
       <v-select :items="[8, 9, 10, 11, 12, 14, 18, 24, 30, 36, 48, 60, 72, 96]" v-model="store.config.styles.fontSize"
-        prepend-inner-icon="mdi-format-font-size-increase" hide-details density="comfortable" class="textSize"
+        prepend-inner-icon="mdi-format-font-size-increase" hide-details density="compact" class="textSize"
         variant="solo"></v-select>
       <v-select
         :items="['Roboto', 'Arial', 'Courier New', 'Calibri', 'Verdana', 'Georgia', 'Gill Sans', 'Segoe UI', 'Tahoma', 'Geneva', 'Cambria', 'Cochin', 'Impact']"
-        v-model="store.config.styles.fontFamily" prepend-inner-icon="mdi-format-size" hide-details density="comfortable"
+        v-model="store.config.styles.fontFamily" prepend-inner-icon="mdi-format-size" hide-details density="compact"
         class="fontFamily" variant="solo"></v-select>
       <div>
         <v-icon icon="mdi-format-color-fill" class="mr-1"></v-icon>
@@ -98,7 +109,7 @@ const checkAudioConfigErrors = async () => {
         </v-btn>
       </div>
       <v-select v-model="store.config.styles.lineSpacing" :items="[0.5, 1.0, 1.5, 2.0, 2.5, 3.0]"
-        prepend-inner-icon="mdi-format-font-size-increase" hide-details density="comfortable" class="lineSpacing"
+        prepend-inner-icon="mdi-format-font-size-increase" hide-details density="compact" class="lineSpacing"
         variant="solo"></v-select>
       <div>
         <v-btn-toggle v-model="store.config.styles.textJustify" shaped mandatory rounded="">
@@ -116,8 +127,8 @@ const checkAudioConfigErrors = async () => {
         <v-icon icon="mdi-flip-vertical"></v-icon>
         <input type="checkbox" v-model="store.config.styles.mirrorY" style="display: none;">
       </label>
-      <v-icon icon="mdi-microphone" @click="voiceConfigDialog = true"></v-icon>
-      <v-dialog v-model="voiceConfigDialog" width="70%" persistent>
+      <v-icon v-if="store.config.styles.mode === 'Reconocimiento de voz'" icon="mdi-microphone" @click="voiceConfigDialog = true"></v-icon>
+      <v-dialog v-if="store.config.styles.mode === 'Reconocimiento de voz'" v-model="voiceConfigDialog" width="70%" persistent>
         <v-form @submit.prevent="checkAudioConfigErrors()" ref="audioConfigForm" validate-on="input">
           <v-card>
             <v-card-title class="text-center mt-4 mb-3">
@@ -132,32 +143,32 @@ const checkAudioConfigErrors = async () => {
                   (val) =>
                     (val && val.length > 0) || 'Debe seleccionar un idioma',
                 ]"></v-autocomplete>
-              <v-switch label="Grabar audio" color="primary" hide-details density="comfortable"
+              <v-switch label="Grabar audio" color="primary" hide-details density="compact"
                 v-model="store.config.voice.recordVoice"></v-switch>
               <v-row class="flex-wrap">
                 <v-col cols="auto">
-                  <v-switch label="Sincronización de voz" color="primary" hide-details density="comfortable"
+                  <v-switch label="Sincronización de voz" color="primary" hide-details density="compact"
                     v-model="store.config.voice.voiceSync"></v-switch>
                 </v-col>
                 <v-col v-if="store.config.voice.voiceSync" cols="auto" style="width: 10em;">
                   <v-text-field label="Umbral de error (0 - 1)" v-model="store.config.voice.recognitionThreshold"
-                    hide-details density="comfortable" variant="underlined"></v-text-field>
+                    hide-details density="compact" variant="underlined"></v-text-field>
                 </v-col>
               </v-row>
               <div class="text-h6 my-4">Comandos de voz</div>
               <v-row class="align-center px-4 pt-1">
                 <label class="w-25">Reproducir:</label>
-                <v-combobox clearable chips multiple hide-details density="comfortable" variant="outlined"
+                <v-combobox clearable chips multiple hide-details density="compact" variant="outlined"
                   v-model="store.config.voice.voiceCommands.play"></v-combobox>
               </v-row>
               <v-row class="align-center px-4 pt-1">
                 <label class="w-25">Pausar:</label>
-                <v-combobox clearable chips multiple hide-details density="comfortable" variant="outlined"
+                <v-combobox clearable chips multiple hide-details density="compact" variant="outlined"
                   v-model="store.config.voice.voiceCommands.pause"></v-combobox>
               </v-row>
               <v-row class="align-center px-4 pt-1">
                 <label class="w-25">Reiniciar:</label>
-                <v-combobox clearable chips multiple hide-details density="comfortable" variant="outlined"
+                <v-combobox clearable chips multiple hide-details density="compact" variant="outlined"
                   v-model="store.config.voice.voiceCommands.restart"></v-combobox>
               </v-row>
             </v-card-text>
@@ -167,22 +178,17 @@ const checkAudioConfigErrors = async () => {
           </v-card>
         </v-form>
       </v-dialog>
-      <v-btn color="blue-lighten-5" @click="$router.push('/editor')">Volver</v-btn>
-      <v-btn color="primary" @click="$router.push('/player')">Iniciar</v-btn>
+    </div>
+    <div>
+      <v-range-slider v-model="store.config.styles.margin" @end="symmetrize()" min="0" max="100" step="1" color="primary" hide-details></v-range-slider>
     </div>
   </header>
-  <div>
-    <v-range-slider v-model="store.config.styles.margin" @end="symmetrize()" min="0" max="100" step="1"></v-range-slider>
-  </div>
 </template>
 
 <style>
-.mode {
-  width: 10em;
-}
 
 .speed {
-  width: 6em;
+  width: 7em;
 }
 
 .textSize {
@@ -199,9 +205,7 @@ const checkAudioConfigErrors = async () => {
 
 .header {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
 }
 
 .options {
@@ -209,11 +213,13 @@ const checkAudioConfigErrors = async () => {
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
+  width: 100%;
   gap: 1em;
-  font-size: 14px;
 }
 
 .selected {
   color: rgb(129, 173, 240);
 }
+
 </style>

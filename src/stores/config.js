@@ -21,7 +21,8 @@ export const useConfigStore = defineStore('config', () => {
       textJustify: ref(0),
       mirrorY: ref(false),
       mirrorX: ref(false),
-      margin: ref([10,90])
+      margin: ref([10,90]),
+      slide: ref(0)
     },
     voice: {
       lang: ref('es-ES'),
