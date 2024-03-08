@@ -58,7 +58,7 @@ const checkAudioConfigErrors = async () => {
       </div>
       <div>
         <v-btn class="mr-4" color="blue-lighten-5" @click="$router.push('/editor')">Volver</v-btn>
-        <v-btn color="primary" @click="$router.push('/player')">Iniciar</v-btn>
+        <v-btn color="primary" @click="$router.push((store.config.styles.mode !== 'Diapositivas') ? '/player' : '/slider')">Iniciar</v-btn>
       </div>
     </div>
     <div class="options">
@@ -66,11 +66,6 @@ const checkAudioConfigErrors = async () => {
         prepend-inner-icon="mdi-speedometer" hide-details density="compact" class="speed" variant="solo"></v-select>
       <v-select v-if="store.config.styles.mode === 'Reconocimiento de voz'" :items="[0.2, 0.3, 0.4]" v-model="store.config.voice.recognitionThreshold"
         prepend-inner-icon="mdi-unfold-more-vertical" hide-details density="compact" class="speed" variant="solo"></v-select>
-      <div v-if="store.config.styles.mode === 'Diapositivas'" class="d-flex">
-        <v-icon icon="mdi-chevron-left"></v-icon>
-        <p class="px-2">{{ store.config.styles.slide }}</p>
-        <v-icon icon="mdi-chevron-right"></v-icon>
-      </div>
       <v-select :items="[8, 9, 10, 11, 12, 14, 18, 24, 30, 36, 48, 60, 72, 96]" v-model="store.config.styles.fontSize"
         prepend-inner-icon="mdi-format-font-size-increase" hide-details density="compact" class="textSize"
         variant="solo"></v-select>
@@ -214,7 +209,6 @@ const checkAudioConfigErrors = async () => {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  width: 100%;
   gap: 1em;
 }
 
