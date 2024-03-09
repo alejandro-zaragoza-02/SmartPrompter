@@ -13,13 +13,16 @@ export const usePlayerStore = defineStore('player', () => {
   const scrollIntervalId = ref(0)
   const timeIntervalId = ref(0)
 
+  const lastWordSaid = ref('Escuchando...')
+
   const restart = () => {
     play.value = 0
     time.value = 0
     scrollTop.value = 0
     pointer.value.parragraph = 0
     pointer.value.text = 0
+    lastWordSaid.value = 'Escuchando...'
   }
 
-  return { play, time, pointer, scrollTop, scrollIntervalId, timeIntervalId, restart }
+  return { play, time, pointer, scrollTop, scrollIntervalId, timeIntervalId, lastWordSaid, restart }
 })

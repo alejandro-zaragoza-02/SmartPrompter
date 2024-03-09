@@ -11,7 +11,7 @@ export const useConfigStore = defineStore('config', () => {
   }]);
   const config = {
     styles: {
-      mode: ref('Diapositivas'),
+      mode: ref('Reconocimiento de voz'),
       speed: ref(5),
       fontSize: ref(48),
       fontFamily: ref('Arial'),

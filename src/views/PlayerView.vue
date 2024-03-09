@@ -1,9 +1,10 @@
 <script setup>
-import { ref } from 'vue'
+import { onUnmounted, ref } from 'vue'
 import Header from '@/components/PlayerHeader.vue'
 import { useConfigStore } from '@/stores/config'
 import { usePlayerStore } from '@/stores/player'
 import { onMounted } from 'vue'
+import router from '@/router'
 
 const store = useConfigStore()
 const player = usePlayerStore()
@@ -33,9 +34,6 @@ const autoScroll = () => {
   switch (store.config.styles.mode) {
     case 'Continuo':
       player.intervalId = setInterval(startModeContinuos, 100 / store.config.styles.speed)
-      break
-    case 'Diapositivas':
-      
       break
     case 'Reconocimiento de voz':
       initVoiceRecognition()
@@ -99,6 +97,12 @@ const checkText = (words) => {
     words.forEach((wordListen, index) => {
       if (wordListen !== '') {
         console.log(wordListen, wordTarget, checkWord(wordListen, wordTarget))
+        player.lastWordSaid = wordListen
+        setTimeout(() => {
+          if(player.lastWordSaid === wordListen){
+            player.lastWordSaid = '...Silencio...'
+          }
+        }, 1500)
         if (checkWord(wordListen, wordTarget)) {
           for (let i = 0; i <= iWordTarget; i++) {
             console.log(i)
@@ -116,9 +120,13 @@ const checkText = (words) => {
   }
 }
 
+
 const paintWord = () => {
   const span = document.getElementById(`word-${player.pointer.parragraph}-${player.pointer.word}`)
   span.classList.add('said')
+  const scrollContainer = document.getElementById('scrollContainer')
+  if (!scrollContainer) return
+  console.log(span.scrollHeight, span.offsetHeight)
 }
 
 const getWord = (amount) => {
@@ -179,27 +187,16 @@ const startModeContinuos = () => {
     }
   }
 }
-
-const startModePowerPoint = () => {
-  const scrollContainer = document.getElementById('scrollContainer')
-  if (!scrollContainer) return
-  scrollContainer.scroll({
-    top: player.scrollTop,
-    left: 0,
-    behavior: 'auto'
-  })
-  if (player.play) {
-    player.scrollTop += 1
-    if (player.scrollTop + scrollContainer.clientHeight === scrollContainer.scrollHeight) {
-      player.restart()
-    }
-  }
-}
-
-
 onMounted(() => {
+  if(store.config.styles.mode === 'Diapositivas'){
+    router.push('/slider')
+  }
   player.restart()
   autoScroll()
+})
+
+onUnmounted(() => {
+  
 })
 
 </script>

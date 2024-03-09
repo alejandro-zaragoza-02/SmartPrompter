@@ -52,6 +52,10 @@ const importFile = (evt) => {
 
 <style>
 
+.mode {
+  width: 15em;
+}
+
 .editor-header {
   display: flex;
   flex-direction: row;

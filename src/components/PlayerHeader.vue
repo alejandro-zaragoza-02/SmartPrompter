@@ -9,21 +9,21 @@
           </div>
         </v-col>
         <v-col class="text-center" cols="4">
-          <div v-if="store.config.styles.mode !== 'Diapositivas'">
-            <v-btn @click="$router.push('/styler')" icon="mdi-arrow-left" color="primary" class="mx-2"></v-btn>
-            <v-btn v-if="player.play" @click="player.play = false" icon="mdi-pause" color="primary" class="mx-2"></v-btn>
-            <v-btn v-if="!player.play" @click="player.play = true" icon="mdi-play" color="primary" class="mx-2"></v-btn>
-            <v-btn @click="player.restart()" icon="mdi-restart" color="primary" class="mx-2"></v-btn>
+          <div v-if="store.config.styles.mode === 'Continuo'">
+            <PlayerControlls></PlayerControlls>
+          </div>
+          <div v-if="store.config.styles.mode === 'Reconocimiento de voz'" class="d-flex justify-center">
+            <VoiceControlls></VoiceControlls>
           </div>
           <div v-if="store.config.styles.mode === 'Diapositivas'">
             <PaginationVue></PaginationVue>
           </div>
         </v-col>
         <v-col class="text-end" cols="4">
-          <div v-if="store.config.styles.mode !== 'Diapositivas'">
+          <div v-if="store.config.styles.mode === 'Continuo'">
             Tiempo: {{ player.time }} s
           </div>
-          <v-btn v-if="store.config.styles.mode === 'Diapositivas'" class="mr-4" color="primary" @click="$router.push('/styler')">Volver</v-btn>
+          <v-btn v-if="store.config.styles.mode !== 'Continuo'" class="mr-4" color="primary" @click="$router.push('/styler')">Volver</v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -35,6 +35,8 @@ import { useConfigStore } from '@/stores/config';
 import { usePlayerStore } from '@/stores/player';
 import { onMounted } from 'vue';
 import PaginationVue from './Pagination.vue';
+import PlayerControlls from './PlayerControlls.vue';
+import VoiceControlls from './VoiceControlls.vue';
 
 const player = usePlayerStore()
 const store = useConfigStore()

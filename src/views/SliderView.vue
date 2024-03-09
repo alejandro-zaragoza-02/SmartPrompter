@@ -4,9 +4,16 @@ import Header from '@/components/PlayerHeader.vue'
 import { useConfigStore } from '@/stores/config'
 import { usePlayerStore } from '@/stores/player'
 import { onMounted } from 'vue'
+import router from '@/router'
 
 const store = useConfigStore()
 const player = usePlayerStore()
+
+onMounted(() => {
+  if(store.config.styles.mode !== 'Diapositivas'){
+    router.push('/player')
+  }
+})
 
 let getAlign = () => {
   switch (store.config.styles.textJustify) {
