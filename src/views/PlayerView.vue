@@ -88,11 +88,12 @@ const initVoiceRecognition = () => {
   }
 }
 
-const checkText = (words) => {
+const checkText = async (words) => {
   let found = false
   let wordsLeft = []
   for (let iWordTarget = 0; iWordTarget < 5; iWordTarget++) {
     if(found) return
+    console.log(player.pointer)
     const wordTarget = getWord(iWordTarget)
     words.forEach((wordListen, index) => {
       if (wordListen !== '') {
@@ -130,10 +131,11 @@ const paintWord = () => {
 }
 
 const getWord = (amount) => {
-  const difference = player.pointer.word + amount - store.contents[player.pointer.parragraph].length
+  const wordsInParragraph = store.contents[player.pointer.parragraph].data.split(' ').length
+  const difference = player.pointer.word + amount - wordsInParragraph
   const newPointer = { ...player.pointer };
   if(difference >= 0){
-    newPointer.parragraph++
+    newPointer.parragraph = nextParragraph()
     newPointer.word = difference
   }else{
     newPointer.word += amount
@@ -143,13 +145,25 @@ const getWord = (amount) => {
 }
 
 const nextPointer = (amount = 1) => {
-  const difference = player.pointer.word + amount - store.contents[player.pointer.parragraph].length
+  const wordsInParragraph = store.contents[player.pointer.parragraph].data.split(' ').length
+  const difference = player.pointer.word + amount - wordsInParragraph
+  console.log('dif: ', difference)
   if(difference >= 0){
-    player.pointer.parragraph++
+    player.pointer.parragraph = nextParragraph()
     player.pointer.word = difference
   }else{
     player.pointer.word += amount
   }
+}
+
+const nextParragraph = () => {
+  let i = player.pointer.parragraph + 1
+  while(i < store.contents.length){
+    if(store.contents[i].type === 'text'){
+      return i
+    }
+  }
+  return -1
 }
 
 const checkWord = (wordListen, wordWanted) => {
