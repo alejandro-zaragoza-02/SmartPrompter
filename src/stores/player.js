@@ -14,6 +14,7 @@ export const usePlayerStore = defineStore('player', () => {
   const timeIntervalId = ref(0)
 
   const lastWordSaid = ref('Escuchando...')
+  const lastWordPosition = ref(0)
 
   const restart = () => {
     play.value = 0
@@ -22,7 +23,8 @@ export const usePlayerStore = defineStore('player', () => {
     pointer.value.parragraph = 0
     pointer.value.text = 0
     lastWordSaid.value = 'Escuchando...'
+    lastWordPosition.value = 0
   }
 
-  return { play, time, pointer, scrollTop, scrollIntervalId, timeIntervalId, lastWordSaid, restart }
+  return { play, time, pointer, scrollTop, scrollIntervalId, timeIntervalId, lastWordSaid, lastWordPosition, restart }
 })

@@ -5,7 +5,7 @@
         <v-col class="text-start" cols="4">
           <div class="d-flex align-center clickable" @click="$router.push('/')">
             <img src="../assets/logo.png" alt="" height="50" width="50" class="mx-2">
-            <h1>SmartPrompter</h1>
+            <h1 class="header-title">SmartPrompter</h1>
           </div>
         </v-col>
         <v-col class="text-center" cols="4">

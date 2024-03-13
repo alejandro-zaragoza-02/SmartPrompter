@@ -3,3 +3,15 @@
 .clickable:hover{
     cursor: pointer;
 }
+
+@media (max-width: 800px) {
+    .header-title{
+        font-size: 1em;
+    }    
+}
+
+@media (max-width: 600px) {
+    .header-title{
+        display: none;
+    }    
+}

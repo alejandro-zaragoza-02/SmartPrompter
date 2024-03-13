@@ -106,7 +106,6 @@ const checkText = async (words) => {
         }, 1500)
         if (checkWord(wordListen, wordTarget)) {
           for (let i = 0; i <= iWordTarget; i++) {
-            console.log(i)
             paintWord()
             nextPointer()
           }
@@ -127,7 +126,18 @@ const paintWord = () => {
   span.classList.add('said')
   const scrollContainer = document.getElementById('scrollContainer')
   if (!scrollContainer) return
-  console.log(span.scrollHeight, span.offsetHeight)
+  if(player.lastWordPosition === 0){
+    player.lastWordPosition = span.getBoundingClientRect().y
+  }
+  if(span.getBoundingClientRect().y !== player.lastWordPosition){
+    player.scrollTop += span.getBoundingClientRect().height + 18
+    scrollContainer.scroll({
+      left: 0,
+      top: player.scrollTop,
+      behavior: 'auto'
+    })
+    player.lastWordPosition = span.getBoundingClientRect().y
+  }
 }
 
 const getWord = (amount) => {

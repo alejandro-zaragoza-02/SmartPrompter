@@ -54,7 +54,7 @@ const checkAudioConfigErrors = async () => {
     <div class="d-flex justify-space-between w-100">
       <div class="d-flex align-center clickable" @click="$router.push('/')">
         <img src="../assets/logo.png" alt="" height="50" width="50" class="mx-2">
-        <h1>SmartPrompter</h1>
+        <h1 class="header-title">SmartPrompter</h1>
       </div>
       <div>
         <v-btn class="mr-4" color="blue-lighten-5" @click="$router.push('/editor')">Volver</v-btn>
@@ -123,7 +123,7 @@ const checkAudioConfigErrors = async () => {
         <input type="checkbox" v-model="store.config.styles.mirrorY" style="display: none;">
       </label>
       <v-icon v-if="store.config.styles.mode === 'Reconocimiento de voz'" icon="mdi-microphone" @click="voiceConfigDialog = true"></v-icon>
-      <v-dialog v-if="store.config.styles.mode === 'Reconocimiento de voz'" v-model="voiceConfigDialog" width="70%" persistent>
+      <v-dialog v-if="store.config.styles.mode === 'Reconocimiento de voz'" v-model="voiceConfigDialog" width="min(90%, 800px)" persistent>
         <v-form @submit.prevent="checkAudioConfigErrors()" ref="audioConfigForm" validate-on="input">
           <v-card>
             <v-card-title class="text-center mt-4 mb-3">
@@ -140,16 +140,6 @@ const checkAudioConfigErrors = async () => {
                 ]"></v-autocomplete>
               <v-switch label="Grabar audio" color="primary" hide-details density="compact"
                 v-model="store.config.voice.recordVoice"></v-switch>
-              <v-row class="flex-wrap">
-                <v-col cols="auto">
-                  <v-switch label="Sincronización de voz" color="primary" hide-details density="compact"
-                    v-model="store.config.voice.voiceSync"></v-switch>
-                </v-col>
-                <v-col v-if="store.config.voice.voiceSync" cols="auto" style="width: 10em;">
-                  <v-text-field label="Umbral de error (0 - 1)" v-model="store.config.voice.recognitionThreshold"
-                    hide-details density="compact" variant="underlined"></v-text-field>
-                </v-col>
-              </v-row>
               <div class="text-h6 my-4">Comandos de voz</div>
               <v-row class="align-center px-4 pt-1">
                 <label class="w-25">Reproducir:</label>
