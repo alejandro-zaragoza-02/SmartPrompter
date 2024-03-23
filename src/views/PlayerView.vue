@@ -91,10 +91,15 @@ const initVoiceRecognition = () => {
 const checkText = async (words) => {
   let found = false
   let wordsLeft = []
-  for (let iWordTarget = 0; iWordTarget < 5; iWordTarget++) {
+  let maxWindow = 5
+  for (let iWordTarget = 0; iWordTarget < maxWindow; iWordTarget++) {
     if(found) return
-    console.log(player.pointer)
     const wordTarget = getWord(iWordTarget)
+    console.log(player.pointer, wordTarget)
+    if(wordTarget.length < 3){
+      maxWindow++
+      continue
+    }
     words.forEach((wordListen, index) => {
       if (wordListen !== '') {
         console.log(wordListen, wordTarget, checkWord(wordListen, wordTarget))
@@ -207,7 +212,7 @@ const startModeContinuos = () => {
   if (player.play) {
     player.scrollTop += 1
     if (player.scrollTop + scrollContainer.clientHeight === scrollContainer.scrollHeight) {
-      player.restart()
+      player.play = false
     }
   }
 }

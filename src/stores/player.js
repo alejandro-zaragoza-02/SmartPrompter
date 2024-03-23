@@ -16,6 +16,8 @@ export const usePlayerStore = defineStore('player', () => {
   const lastWordSaid = ref('Escuchando...')
   const lastWordPosition = ref(0)
 
+  const audioFile = ref(null)
+
   const restart = () => {
     play.value = 0
     time.value = 0
@@ -26,5 +28,5 @@ export const usePlayerStore = defineStore('player', () => {
     lastWordPosition.value = 0
   }
 
-  return { play, time, pointer, scrollTop, scrollIntervalId, timeIntervalId, lastWordSaid, lastWordPosition, restart }
+  return { play, time, pointer, scrollTop, scrollIntervalId, timeIntervalId, lastWordSaid, lastWordPosition, audioFile, restart }
 })
