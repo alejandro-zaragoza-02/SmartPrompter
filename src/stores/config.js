@@ -27,7 +27,7 @@ export const useConfigStore = defineStore('config', () => {
     voice: {
       lang: ref('es-ES'),
       micro: ref(''),
-      recordVoice: ref(false),
+      recordVoice: ref(true),
       voiceSync: ref(false),
       recognitionThreshold: ref(0.3),
       wordWindow: ref(5),

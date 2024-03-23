@@ -41,28 +41,28 @@ const recordAudio = () => {
 
   if(!store.config.voice.recordVoice) return
   
-  let chunks = [];
+  let chunks = []
 
   navigator.mediaDevices.getUserMedia({ audio: true })
     .then(stream => {
       mediaRecorder = new MediaRecorder(stream);
 
-      mediaRecorder.start();
+      mediaRecorder.start()
 
       mediaRecorder.ondataavailable = e => {
-        chunks.push(e.data);
+        chunks.push(e.data)
       };
 
       mediaRecorder.onstop = e => {
-        player.audioFile = new Blob(chunks, { 'type': 'audio/ogg; codecs=opus' });
-        chunks = [];
+        player.audioFile = chunks
+        chunks = []
         // let audioURL = window.URL.createObjectURL(blob);
         // let link = document.createElement("a");
         // link.href = audioURL;
         // link.download = 'audio.ogg';
         // link.click();
-      };
-    });
+      }
+    })
 }
 
 </script>
