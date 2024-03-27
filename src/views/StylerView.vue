@@ -36,7 +36,7 @@ const getFlipY = () => { return (store.config.styles.mirrorY ? -1 : 1) }
       color: store.config.styles.textColor,
       transform: `scale(${getFlipX()},${getFlipY()})`,
       fontFamily: store.config.styles.fontFamily,
-      paddingInline: store.config.styles.margin[0] + '%',
+      paddingInline: store.config.styles.margin[0] + '%'
     }" class="pt-4">
       <div v-for="(content, index) in store.contents">
         <p v-if="content.type === 'text'">

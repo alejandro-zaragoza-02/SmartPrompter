@@ -2,9 +2,22 @@ html, body, #app{
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    height: 100vh;
     overflow-y: hidden !important;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
+
+main{
+    overflow-y: scroll !important;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
 
 .clickable:hover{
     cursor: pointer;
