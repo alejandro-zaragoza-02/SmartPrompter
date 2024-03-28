@@ -34,7 +34,11 @@ const downloadAudio = () => {
 <template>
   <RouterView />
   <v-dialog v-model="modal" width="min(90%, 800px)">
-    <v-card prepend-icon="mdi-progress-download" title="Grabación de audio detectada">
+    <v-card>
+      <v-toolbar>
+        <v-toolbar-title>Grabación de audio detectada</v-toolbar-title>
+        <v-btn icon="mdi-close" @click="player.audioFile = []"></v-btn>
+      </v-toolbar>
       <v-card-text>
         <p class="mb-2">Se ha detectado una grabación de audio. ¿Quieres descargarlo?</p>
         <v-container>
@@ -51,8 +55,7 @@ const downloadAudio = () => {
         </v-row>
       </v-card-text>
       <template v-slot:actions>
-        <v-btn class="ms-auto" text="Descargar" @click="downloadAudio()"></v-btn>
-        <v-btn text="Salir" @click="player.audioFile = []"></v-btn>
+        <v-btn class="ms-auto" text="Descargar" block @click="downloadAudio()" variant="elevated"</v-btn>
       </template>
     </v-card>
   </v-dialog>

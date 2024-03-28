@@ -31,11 +31,17 @@ export const useConfigStore = defineStore('config', () => {
       voiceSync: ref(false),
       recognitionThreshold: ref(0.3),
       wordWindow: ref(5),
-      voiceCommands: {
-        play: ref([]),
-        pause: ref([]),
-        restart: ref([]),
-      },
+      voiceCommands: ref({
+        Continuo: {
+            play: [],
+            pause: [],
+            restart: []
+        },
+        Dispositivas: {
+            back: [],
+            next: []
+        }
+    })
     }
   }
 

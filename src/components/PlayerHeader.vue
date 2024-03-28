@@ -1,14 +1,10 @@
 <template>
-  <header class="bg-blue-lighten-5">
-    <v-container fluid>
-      <v-row justify="space-between" align="center">
-        <v-col class="text-start" cols="4">
-          <div class="d-flex align-center clickable" @click="$router.push('/')">
-            <img src="../assets/logo.png" alt="" height="50" width="50" class="mx-2">
-            <h1 class="header-title">SmartPrompter</h1>
-          </div>
-        </v-col>
-        <v-col class="text-center" cols="4">
+  <header class="bg-grey-darken-3 header">
+    <v-col cols="4" class="text-left d-flex align-center" @click="$router.push('/')">
+      <img src="../assets/logo.png" alt="" height="50" width="50" class="mx-2">
+      <h1 class="text-xs-h6 text-md-h5 header-title">SmartPrompter</h1>
+    </v-col>
+    <v-col class="text-center" cols="4">
           <div v-if="store.config.styles.mode === 'Continuo'">
             <PlayerControlls></PlayerControlls>
           </div>
@@ -19,14 +15,13 @@
             <PaginationVue></PaginationVue>
           </div>
         </v-col>
-        <v-col class="text-end" cols="4">
-          <div v-if="store.config.styles.mode === 'Continuo'">
-            Tiempo: {{ player.time }} s
-          </div>
-          <v-btn v-if="store.config.styles.mode !== 'Continuo'" class="mr-4" color="primary" @click="$router.push('/styler')">Volver</v-btn>
-        </v-col>
-      </v-row>
-    </v-container>
+    <v-col cols="4" class="text-right">
+      <!-- <v-select label="Modo" :items="['Continuo', 'Diapositivas', 'Reconocimiento de voz']" v-model="store.config.styles.mode" hide-details
+        density="compact" class="mode text-sm-h12 text-md-h1" variant="solo"></v-select> -->
+      
+      <v-btn @click="$router.push('/styler')" variant="plain" icon="mdi-arrow-left"></v-btn>
+      <v-btn disabled variant="plain" icon="mdi-arrow-right" density="comfortable" class="ml-2"></v-btn>
+    </v-col>
   </header>
 </template>
 

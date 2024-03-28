@@ -1,11 +1,7 @@
 <script setup>
 import { useConfigStore } from '@/stores/config'
 import { ref } from 'vue'
-import languages from '../helpers/getLanguages.js'
-import ExportSelector from '@/components/ExportSelector.vue'
-
-const donwloadModal = ref(false)
-
+import Settings from '@/components/Settings.vue'
 
 const store = useConfigStore()
 
@@ -15,38 +11,8 @@ const colorTextDialog = ref(false)
 const audioConfigForm = ref(null);
 
 const voiceConfigDialog = ref(false)
-const audioDevices = ref([])
-
-navigator.mediaDevices.enumerateDevices()
-  .then(function (devices) {
-    devices.forEach(function (device) {
-      if (device.kind === 'audioinput') {
-        audioDevices.value.push(device.label)
-        if (device.deviceId === 'default') {
-          store.config.voice.micro = device.label
-        }
-      }
-    });
-  })
-  .catch(function (err) {
-    console.log(err.name + ": " + err.message)
-  });
 
 const auxMargin = ref(store.config.styles.margin)
-
-const importFile = (evt) => {
-  let input = evt.target
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
-    reader.onload = function (e) {
-      const json = JSON.parse(e.target.result)
-      store.contents = json.contents
-      store.config = json.config
-      input.value = ''
-    }
-    reader.readAsText(input.files[0]);
-  }
-}
 
 const symmetrize = () => {
   if (auxMargin.value[0] !== store.config.styles.margin[0] && (auxMargin.value[1] === store.config.styles.margin[1] || auxMargin.value[0] === store.config.styles.margin[1])) {
@@ -156,55 +122,7 @@ const checkAudioConfigErrors = async () => {
               <v-icon icon="mdi-flip-vertical"></v-icon>
               <input type="checkbox" v-model="store.config.styles.mirrorY" style="display: none;">
             </label>
-            <v-icon v-if="store.config.styles.mode === 'Reconocimiento de voz'" icon="mdi-microphone"
-              @click="voiceConfigDialog = true"></v-icon>
-            <v-icon icon="mdi-download" @click="donwloadModal = true"></v-icon>
-            <ExportSelector v-model="donwloadModal"></ExportSelector>
-            <label class="clickable">
-              <v-icon icon="mdi-file-upload-outline"></v-icon>
-              <input v-show="false" type="file" @change="importFile($event)">
-            </label>
-            <v-dialog v-if="store.config.styles.mode === 'Reconocimiento de voz'" v-model="voiceConfigDialog"
-              width="min(90%, 800px)" persistent>
-              <v-form @submit.prevent="checkAudioConfigErrors()" ref="audioConfigForm" validate-on="input">
-                <v-card>
-                  <v-card-title class="text-center mt-4 mb-3">
-                    <span class="text-h5">Configuración de audio</span>
-                  </v-card-title>
-                  <v-divider></v-divider>
-                  <v-card-text>
-                    <v-select label="Micrófono" variant="outlined" :items="audioDevices"
-                      v-model="store.config.voice.micro"></v-select>
-                    <v-autocomplete label="Idioma" variant="outlined" :items="languages" item-title="title"
-                      item-value="code" v-model="store.config.voice.lang" :rules="[
-            (val) =>
-              (val && val.length > 0) || 'Debe seleccionar un idioma',
-          ]"></v-autocomplete>
-                    <v-switch label="Grabar audio" color="primary" hide-details density="compact"
-                      v-model="store.config.voice.recordVoice"></v-switch>
-                    <div class="text-h6 my-4">Comandos de voz</div>
-                    <v-row class="align-center px-4 pt-1">
-                      <label class="w-25">Reproducir:</label>
-                      <v-combobox clearable chips multiple hide-details density="compact" variant="outlined"
-                        v-model="store.config.voice.voiceCommands.play"></v-combobox>
-                    </v-row>
-                    <v-row class="align-center px-4 pt-1">
-                      <label class="w-25">Pausar:</label>
-                      <v-combobox clearable chips multiple hide-details density="compact" variant="outlined"
-                        v-model="store.config.voice.voiceCommands.pause"></v-combobox>
-                    </v-row>
-                    <v-row class="align-center px-4 pt-1">
-                      <label class="w-25">Reiniciar:</label>
-                      <v-combobox clearable chips multiple hide-details density="compact" variant="outlined"
-                        v-model="store.config.voice.voiceCommands.restart"></v-combobox>
-                    </v-row>
-                  </v-card-text>
-                  <v-card-actions class="mt-8">
-                    <v-btn color="primary" block type="submit" variant="outlined">Cerrar</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-form>
-            </v-dialog>
+            <Settings></Settings>
           </v-col>
         </v-row>
     </v-container>
@@ -225,15 +143,15 @@ const checkAudioConfigErrors = async () => {
 }
 
 .textSize{
-  min-width: 8em;
-}
-
-.colorPicker{
   min-width: 7em;
 }
 
+.colorPicker{
+  min-width: 6em;
+}
+
 .lineSpacing{
-  min-width: 8em;
+  min-width: 7em;
 }
 
 .center {

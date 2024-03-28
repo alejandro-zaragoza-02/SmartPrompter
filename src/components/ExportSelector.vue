@@ -1,5 +1,8 @@
 <template>
     <v-dialog v-model="modalActivator" width="min(90%, 500px)">
+        <template v-slot:activator="{ props: activatorProps }">
+            <v-btn prepend-icon="mdi-download" block v-bind="activatorProps">Exportar</v-btn>
+        </template>
         <v-card style="overflow: hidden;">
             <v-toolbar>
                 <v-toolbar-title>Elegir formato de descarga</v-toolbar-title>
@@ -46,7 +49,7 @@ import { useConfigStore } from '@/stores/config';
 import { ref } from 'vue';
 
 
-const modalActivator = defineModel()
+const modalActivator = ref(false)
 
 const store = useConfigStore()
 
