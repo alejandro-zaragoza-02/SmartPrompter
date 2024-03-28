@@ -64,23 +64,52 @@ const download = () => {
         let file 
         switch (downloadConfig.value.type) {
             case 'Json':
-                file = new Blob([JSON.stringify(store)], { type: 'application/json' })
+                let data = { ...store }
+                switch (downloadConfig.value.content) {
+                    case 'Contenido':
+                        data.config = null
+                        break
+                    case 'Configuración':
+                        data.contents = null
+                        break
+                    case 'Ambos':
+                        break
+                    default:
+                        throw new Error('Configuración erronea')
+                }
+                file = new Blob([JSON.stringify(data)], { type: 'application/json' })
                 break;
             case 'Markdown':
-
+                let md = ''
+                if(downloadConfig.value.content === 'Configuración' || downloadConfig.value.content === 'Ambos'){
+                    md += '---\n'
+                    md += JSON.stringify(store.config)
+                    md += '\n---\n'
+                }
+                if(downloadConfig.value.content === 'Contenido' || downloadConfig.value.content === 'Ambos'){
+                    store.contents.forEach(content => {
+                        if(content.type === 'image'){
+                            md += `![Imagen](${content.data})`
+                        }else if(content.type === 'text'){
+                            md += content.data
+                        }
+                        md += '\n___\n'
+                    })
+                }
+                file = new Blob([md], { type: 'text/plain' })
                 break
             default:
-                break
+                throw new Error('Configuración erronea')
         }
         const url = URL.createObjectURL(file)
         const aElement = document.createElement('a')
-        aElement.setAttribute('download', 'config.json')
+        aElement.setAttribute('download', `${downloadConfig.value.name}.${(downloadConfig.value.type === 'Json') ? 'json' : 'md'}`)
         aElement.setAttribute('href', url)
         aElement.setAttribute('target', '_blank')
         aElement.click();
         URL.revokeObjectURL(href)
     } catch (error) {
-        console.log("No se puede cargar el fichero")
+        console.log("No se puede cargar el fichero", error)
     }
 }
 
