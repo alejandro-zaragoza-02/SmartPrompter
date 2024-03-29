@@ -11,7 +11,7 @@ const mode = ref(config.styles.mode)
 const speed = ref(config.styles.speed)
 const error = ref(config.voice.recognitionThreshold)
 const window = ref(config.voice.wordWindow)
-const micro = ref(config.voice.micro || '')
+const micro = ref(config.voice.micro)
 const lang = ref(config.voice.lang)
 const audio = ref(config.voice.recordVoice)
 const commands = ref(config.voice.voiceCommands)
@@ -22,10 +22,10 @@ navigator.mediaDevices.enumerateDevices()
     .then(function (devices) {
         devices.forEach(function (device) {
             if (device.kind === 'audioinput') {
-                audioDevices.value.push(device.label)
-                if (device.deviceId === 'default') {
-                    micro.value = device.label
-                }
+                audioDevices.value.push({
+                    label: device.label,
+                    value: device.deviceId
+                })
             }
         });
     })
@@ -103,7 +103,7 @@ const saveConfig = () => {
                     <v-divider class="mt-2"></v-divider>
                     <v-list-subheader>Ajustes de voz</v-list-subheader>
                     <v-list-item>
-                        <v-select label="Micrófono" variant="outlined" :items="audioDevices" v-model="micro"
+                        <v-select label="Micrófono" variant="outlined" :items="audioDevices" item-title="label" item-value="value" v-model="micro"
                             class="mt-2"></v-select>
                         <v-autocomplete label="Idioma" variant="outlined" :items="languages" item-title="title"
                             item-value="code" v-model="lang" :rules="[

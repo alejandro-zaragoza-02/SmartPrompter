@@ -5,13 +5,19 @@ import { watch } from 'vue';
 
 const player = usePlayerStore()
 const modal = ref(player.audioFile.length > 0)
+const loadingAudio = ref(true)
+const loadingTimeout = ref(0)
 
 const fileName = ref('')
 const fileExtension = ref('OGG')
 
 watch(player, (newAudioFile) => {
   console.log(newAudioFile.audioFile)
-  modal.value = newAudioFile.audioFile.length > 0
+  modal.value = newAudioFile.audioFile.length > 0 && newAudioFile.audioFile[0]?.size > 25000
+})
+
+watch(modal, (newModal) => {
+  loadingAudio.value = true
 })
 
 const getSrc = () => {
@@ -28,6 +34,12 @@ const downloadAudio = () => {
   player.audioFile = []
 }
 
+const loadAudio = () => {
+  clearTimeout(loadingTimeout.value)
+  loadingTimeout.value = setTimeout(() => {
+    loadingAudio.value = false
+  }, 1000)
+}
 
 </script>
 
@@ -40,10 +52,14 @@ const downloadAudio = () => {
         <v-btn icon="mdi-close" @click="player.audioFile = []"></v-btn>
       </v-toolbar>
       <v-card-text>
-        <p class="mb-2">Se ha detectado una grabación de audio. ¿Quieres descargarlo?</p>
-        <v-container>
-          <audio v-if="player.audioFile.length > 0" class="w-100" controls :src="getSrc()"
-            controlslist="nodownload"></audio>
+        <p>Se ha detectado una grabación de audio. ¿Quieres descargarlo?</p>
+        <v-container >
+          <div v-show="player.audioFile.length > 0 && !loadingAudio" class="audioInput">
+            <audio class="w-100 h-100" controls :src="getSrc()" controlslist="nodownload" :oncanplaythrough="loadAudio"></audio>
+          </div>
+          <div v-if="loadingAudio" class="audioInput d-flex align-center">
+            <v-progress-linear indeterminate></v-progress-linear>
+          </div>
         </v-container>
         <v-row dense>
           <v-col cols="12" sm="9">
@@ -60,3 +76,12 @@ const downloadAudio = () => {
     </v-card>
   </v-dialog>
 </template>
+
+<style scoped>
+
+.audioInput{
+  height: 4em;
+  margin-bottom: .5em
+}
+
+</style>

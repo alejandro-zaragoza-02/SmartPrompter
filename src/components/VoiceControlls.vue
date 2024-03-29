@@ -53,14 +53,9 @@ const recordAudio = () => {
         chunks.push(e.data)
       };
 
-      mediaRecorder.onstop = e => {
+      mediaRecorder.onstop = () => {
         player.audioFile = chunks
         chunks = []
-        // let audioURL = window.URL.createObjectURL(blob);
-        // let link = document.createElement("a");
-        // link.href = audioURL;
-        // link.download = 'audio.ogg';
-        // link.click();
       }
     })
 }

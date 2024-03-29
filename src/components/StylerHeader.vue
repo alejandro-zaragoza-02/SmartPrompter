@@ -57,9 +57,9 @@ const checkAudioConfigErrors = async () => {
           <v-select v-if="store.config.styles.mode === 'Reconocimiento de voz'" :items="[0.2, 0.3, 0.4]" v-model="store.config.voice.recognitionThreshold"
             prepend-inner-icon="mdi-unfold-more-vertical" hide-details density="compact" class="speed" variant="solo"></v-select> -->
           <v-col class="center">
-              <v-select :items="[8, 9, 10, 11, 12, 14, 18, 24, 30, 36, 48, 60, 72, 96]"
+              <v-combobox :items="[8, 9, 10, 11, 12, 14, 18, 24, 30, 36, 48, 60, 72, 96]"
                 v-model="store.config.styles.fontSize" prepend-inner-icon="mdi-format-font-size-increase" hide-details
-                density="compact" class="textSize" variant="solo"></v-select>
+                density="compact" class="textSize" variant="solo"></v-combobox>
           </v-col>
           <v-col class="center">
             <v-select
@@ -101,9 +101,9 @@ const checkAudioConfigErrors = async () => {
             </div>
           </v-col>
           <v-col class="center">
-            <v-select v-model="store.config.styles.lineSpacing" :items="[0.5, 1.0, 1.5, 2.0, 2.5, 3.0]"
+            <v-combobox v-model="store.config.styles.lineSpacing" :items="[0.5, 1.0, 1.5, 2.0, 2.5, 3.0]"
               prepend-inner-icon="mdi-format-font-size-increase" hide-details density="compact" class="lineSpacing"
-              variant="solo"></v-select>
+              variant="solo"></v-combobox>
           </v-col>
           <v-col class="center">
             <v-btn-toggle v-model="store.config.styles.textJustify" mandatory>

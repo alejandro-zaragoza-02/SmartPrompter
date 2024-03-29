@@ -23,7 +23,7 @@ export const usePlayerStore = defineStore('player', () => {
     time.value = 0
     scrollTop.value = 0
     pointer.value.parragraph = 0
-    pointer.value.text = 0
+    pointer.value.word = 0
     lastWordSaid.value = 'Escuchando...'
     lastWordPosition.value = 0
     audioFile.value = []

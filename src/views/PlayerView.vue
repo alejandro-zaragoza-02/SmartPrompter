@@ -1,5 +1,5 @@
 <script setup>
-import { onUnmounted, ref } from 'vue'
+import { onUnmounted } from 'vue'
 import Header from '@/components/PlayerHeader.vue'
 import { useConfigStore } from '@/stores/config'
 import { usePlayerStore } from '@/stores/player'
@@ -8,6 +8,8 @@ import router from '@/router'
 
 const store = useConfigStore()
 const player = usePlayerStore()
+
+let recognition = null
 
 let getAlign = () => {
   switch (store.config.styles.textJustify) {
@@ -37,6 +39,15 @@ const autoScroll = () => {
       break
     case 'Reconocimiento de voz':
       initVoiceRecognition()
+      // navigator.mediaDevices.getUserMedia({
+      //   audio: {
+      //     deviceId: store.config.voice.micro ? { exact: store.config.voice.micro } : undefined
+      //   }
+      // }).then(function (stream) {
+      //   initVoiceRecognition()
+      // }).catch(function (err) {
+      //     console.log(err);
+      // })
       break
     default:
       break
@@ -45,7 +56,7 @@ const autoScroll = () => {
 }
 
 const initVoiceRecognition = () => {
-  const recognition = new (webkitSpeechRecognition || SpeechRecognition)()
+  recognition = new (webkitSpeechRecognition || SpeechRecognition)()
   recognition.lang = store.config.voice.lang || 'es-ES'
   recognition.interimResults = true
   recognition.continuos = true
@@ -91,7 +102,7 @@ const initVoiceRecognition = () => {
 const checkText = async (words) => {
   let found = false
   let wordsLeft = []
-  let maxWindow = 5
+  let maxWindow = store.config.voice.wordWindow
   for (let iWordTarget = 0; iWordTarget < maxWindow; iWordTarget++) {
     if(found) return
     const wordTarget = getWord(iWordTarget)
@@ -183,7 +194,7 @@ const nextParragraph = () => {
 
 const checkWord = (wordListen, wordWanted) => {
   wordListen = wordListen.replace(/[^a-zA-Z0-9\u00C0-\u00FF]/g,'').toUpperCase()
-  return levenshtein(wordListen, wordWanted) <= Math.ceil(wordWanted.length / 3)
+  return levenshtein(wordListen, wordWanted) <= Math.ceil(wordWanted.length / (store.config.voice.recognitionThreshold * 10)) //Esta al reves
 }
 
 
@@ -225,7 +236,11 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  
+  console.log('Unmounted')
+  player.restart()
+  recognition.onend = null
+  recognition.stop()
+  recognition = null
 })
 
 </script>
@@ -244,9 +259,9 @@ onUnmounted(() => {
       fontFamily: store.config.styles.fontFamily,
       paddingInline: store.config.styles.margin[0] + '%',
     }">
-      <div v-for="(content, cIndex) in store.contents">
+      <div v-for="(content, cIndex) in store.contents" :key="content.data">
         <div v-if="content.type === 'text'">
-          <p v-for="parragraph in content.data.split('\n')">
+          <p v-for="parragraph in content.data.split('\n')" :key="parragraph">
             <template v-for="(word, wIndex) in parragraph.split(' ')">
               <span :id="`word-${cIndex}-${wIndex}`">{{ word }}</span>{{ ' ' }}
             </template>
