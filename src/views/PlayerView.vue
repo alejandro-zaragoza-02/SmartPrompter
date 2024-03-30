@@ -26,6 +26,21 @@ let getAlign = () => {
   }
 }
 
+const getAligImg = () => {
+  switch (store.config.styles.textJustify) {
+    case 0:
+      return '0'
+    case 1:
+      return '0 auto'
+    case 2:
+      return '0 0 0 auto'
+    case 3:
+      return '0'
+    default:
+      return '0'
+  }
+}
+
 let getFlipX = () => { return (store.config.styles.mirrorX ? -1 : 1) }
 let getFlipY = () => { return (store.config.styles.mirrorY ? -1 : 1) }
 
@@ -87,7 +102,7 @@ const initVoiceRecognition = () => {
       lastTranscription = transcription
       let words = text.split(' ')
       checkText(words)
-
+      
     }else{
       //console.log('Final: ', event.results[0][0].transcript)
       // Corregir palabras anteriores
@@ -143,15 +158,11 @@ const paintWord = () => {
   const scrollContainer = document.getElementById('scrollContainer')
   if (!scrollContainer) return
   if(player.lastWordPosition === 0){
-    player.lastWordPosition = span.getBoundingClientRect().y
+    player.lastWordPosition = span.getBoundingClientRect().y + (span.getBoundingClientRect().height / 2)
   }
   if(span.getBoundingClientRect().y !== player.lastWordPosition){
-    player.scrollTop += span.getBoundingClientRect().height + 18
-    scrollContainer.scroll({
-      left: 0,
-      top: player.scrollTop,
-      behavior: 'auto'
-    })
+    console.log(span.getBoundingClientRect().top - player.lastWordPosition)
+    scrollContainer.scrollTop += span.getBoundingClientRect().top - player.lastWordPosition
     player.lastWordPosition = span.getBoundingClientRect().y
   }
 }
@@ -188,13 +199,16 @@ const nextParragraph = () => {
     if(store.contents[i].type === 'text'){
       return i
     }
+    const img = document.getElementById(`img-${i}`)
+    player.scrollTop += img.getBoundingClientRect().height + 18.
+    i++
   }
   return -1
 }
 
 const checkWord = (wordListen, wordWanted) => {
   wordListen = wordListen.replace(/[^a-zA-Z0-9\u00C0-\u00FF]/g,'').toUpperCase()
-  return levenshtein(wordListen, wordWanted) <= Math.ceil(wordWanted.length / (store.config.voice.recognitionThreshold * 10)) //Esta al reves
+  return levenshtein(wordListen, wordWanted) <= Math.ceil(wordWanted.length / ((0.6 - store.config.voice.recognitionThreshold) * 10))
 }
 
 
@@ -238,9 +252,11 @@ onMounted(() => {
 onUnmounted(() => {
   console.log('Unmounted')
   player.restart()
-  recognition.onend = null
-  recognition.stop()
-  recognition = null
+  if(recognition){
+    recognition.onend = null
+    recognition.stop()
+    recognition = null
+  }
 })
 
 </script>
@@ -265,11 +281,11 @@ onUnmounted(() => {
             <template v-for="(word, wIndex) in parragraph.split(' ')">
               <span :id="`word-${cIndex}-${wIndex}`">{{ word }}</span>{{ ' ' }}
             </template>
-            <br>
           </p>
         </div>
-        <v-img v-if="content.type === 'image'" :width="`${content.config.width}%`" :id="`img-${index}`"
-          :src="content.data" class="my-2"></v-img>
+        <v-img v-if="content.type === 'image'" :width="`${content.config.width}%`" :id="`img-${cIndex}`"
+          :src="content.data" :style="{ margin: getAligImg() }"></v-img>
+        <br>
       </div>
     </div>
     <div style="height: 95vh;"></div>

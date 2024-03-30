@@ -68,8 +68,8 @@ const checkAudioConfigErrors = async () => {
                 class="fontFamily ml-2" variant="solo"></v-select>
           </v-col>
     
-          <v-col class="center">
-            <div class="colorPicker">
+          <v-col class="center colorPicker">
+            <div class="mr-2">
               <v-icon icon="mdi-format-color-fill" class="mr-1"></v-icon>
               <v-btn @click="colorFillDialog = true" :color="store.config.styles.backgroundColor">
                 <v-dialog v-model="colorFillDialog" width="auto">
@@ -84,7 +84,7 @@ const checkAudioConfigErrors = async () => {
                 </v-dialog>
               </v-btn>
             </div>
-            <div class="colorPicker">
+            <div>
               <v-icon icon="mdi-format-color-text" class="mr-1"></v-icon>
               <v-btn @click="colorTextDialog = true;" :color="store.config.styles.textColor">
                 <v-dialog v-model="colorTextDialog" width="auto">
@@ -106,7 +106,7 @@ const checkAudioConfigErrors = async () => {
               variant="solo"></v-combobox>
           </v-col>
           <v-col class="center">
-            <v-btn-toggle v-model="store.config.styles.textJustify" mandatory>
+            <v-btn-toggle v-model="store.config.styles.textJustify" mandatory divided>
               <v-btn size="small" icon="mdi-format-align-left"></v-btn>
               <v-btn size="small" icon="mdi-format-align-center"></v-btn>
               <v-btn size="small" icon="mdi-format-align-right"></v-btn>
@@ -147,7 +147,7 @@ const checkAudioConfigErrors = async () => {
 }
 
 .colorPicker{
-  min-width: 6em;
+  min-width: 13em;
 }
 
 .lineSpacing{

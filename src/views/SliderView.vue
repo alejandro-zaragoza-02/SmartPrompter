@@ -30,6 +30,21 @@ let getAlign = () => {
   }
 }
 
+const getAligImg = () => {
+  switch (store.config.styles.textJustify) {
+    case 0:
+      return '0'
+    case 1:
+      return '0 auto'
+    case 2:
+      return '0 0 0 auto'
+    case 3:
+      return '0'
+    default:
+      return '0'
+  }
+}
+
 let getFlipX = () => { return (store.config.styles.mirrorX ? -1 : 1) }
 let getFlipY = () => { return (store.config.styles.mirrorY ? -1 : 1) }
 
@@ -57,7 +72,7 @@ let getFlipY = () => { return (store.config.styles.mirrorY ? -1 : 1) }
         </p>
       </div>
       <v-img v-if="store.contents[store.config.styles.slide].type === 'image'" :width="`${store.contents[store.config.styles.slide].config.width}%`"
-        :id="`img-${store.config.styles.slide}`" :src="store.contents[store.config.styles.slide].data" class="my-2"></v-img>
+        :id="`img-${store.config.styles.slide}`" :src="store.contents[store.config.styles.slide].data" :style="{ margin: getAligImg() }"></v-img>
     </div>
   </main>
 </template>

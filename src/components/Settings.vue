@@ -4,17 +4,17 @@ import languages from '../helpers/getLanguages.js'
 import { useConfigStore } from '@/stores/config';
 import ExportSelector from '@/components/ExportSelector.vue'
 
-const { config } = useConfigStore()
+const store = useConfigStore()
 
 const dialog = ref(false)
-const mode = ref(config.styles.mode)
-const speed = ref(config.styles.speed)
-const error = ref(config.voice.recognitionThreshold)
-const window = ref(config.voice.wordWindow)
-const micro = ref(config.voice.micro)
-const lang = ref(config.voice.lang)
-const audio = ref(config.voice.recordVoice)
-const commands = ref(config.voice.voiceCommands)
+const mode = ref(store.config.styles.mode)
+const speed = ref(store.config.styles.speed)
+const error = ref(store.config.voice.recognitionThreshold)
+const window = ref(store.config.voice.wordWindow)
+const micro = ref(store.config.voice.micro)
+const lang = ref(store.config.voice.lang)
+const audio = ref(store.config.voice.recordVoice)
+const commands = ref(store.config.voice.voiceCommands)
 
 const audioDevices = ref([])
 
@@ -38,31 +38,69 @@ const importFile = (evt) => {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function (e) {
-            const json = JSON.parse(e.target.result)
-            store.contents = json.contents
-            store.config = json.config
+            switch (input.files[0].type) {
+                case 'application/json':
+                    const json = JSON.parse(e.target.result)
+                    if(json.contents){
+                        store.contents = json.contents
+                    }
+                    if(json.config){
+                        store.config = json.config
+                    }
+                    break
+                case '':
+                    if(input.files[0].name.endsWith('.md')){
+                        console.log(e.target.result)
+                        let contents = []
+                        const data = e.target.result.split('___')
+                        data.forEach(content => {
+                            if(content.includes('![Imagen]')){
+                                contents.push({
+                                    type: 'image',
+                                    data: content.slice(11, content.length - 2),
+                                    config: {
+                                        width: 10
+                                    }
+                                })
+                            }else{
+                                contents.push({
+                                    type: 'text',
+                                    data: content
+                                })
+                            }
+                        })
+                        store.contents = contents
+                    }else{
+                        throw new Error('El fichero no es válido.')
+                    }
+                    break
+                default:
+                    throw new Error('El fichero no es válido.')
+            }
+            console.log(input.files[0])
             input.value = ''
+            // Añadir toast
         }
         reader.readAsText(input.files[0]);
     }
 }
 
 const saveConfig = () => {
-    config.styles.mode = mode
-    config.styles.speed = speed
-    config.voice.recognitionThreshold = error
-    config.voice.wordWindow = window
-    config.voice.micro = micro
-    config.voice.lang = lang
-    config.voice.recordVoice = audio
-    config.voice.voiceCommands = commands
+    store.config.styles.mode = mode
+    store.config.styles.speed = speed
+    store.config.voice.recognitionThreshold = error
+    store.config.voice.wordWindow = window
+    store.config.voice.micro = micro
+    store.config.voice.lang = lang
+    store.config.voice.recordVoice = audio
+    store.config.voice.voiceCommands = commands
     dialog.value = false
 }
 
 </script>
 
 <template>
-    <div class="text-center pa-4">
+    <div class="text-center">
         <v-dialog v-model="dialog" transition="dialog-bottom-transition" fullscreen>
             <template v-slot:activator="{ props: activatorProps }">
                 <v-icon icon="mdi-cog" v-bind="activatorProps"></v-icon>
