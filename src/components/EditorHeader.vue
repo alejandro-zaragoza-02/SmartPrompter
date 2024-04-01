@@ -5,7 +5,7 @@
 <template>
   <header class="bg-grey-darken-3 header">
     <v-col cols="4" class="text-left d-flex align-center" @click="$router.push('/')">
-      <img src="../assets/logo.png" alt="" height="50" width="50" class="mx-2">
+      <img src="/logo.png" alt="" height="50" width="50" class="mx-2">
       <h1 class="text-xs-h6 text-md-h5 header-title">SmartPrompter</h1>
     </v-col>
     <v-col cols="4" class="text-center">

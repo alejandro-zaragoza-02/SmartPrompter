@@ -52,7 +52,7 @@ const icons = [
         <v-row no-gutters>
           <v-col cols="12" xs="12" sm="5" class="pa-4">
             <div class="d-flex flex-column align-center">
-              <v-img src="/src/assets/logo.png" width="200" height="200"></v-img>
+              <v-img src="logo.png" width="200" height="200"></v-img>
               <h1>SmartPrompter</h1>
               <v-btn class="mt-4" @click="$router.push('/editor')">Empezar a usar</v-btn>
             </div>
@@ -67,7 +67,7 @@ const icons = [
         <v-row no-gutters>
           <v-col v-for="card in cardsInfo" cols="12" xs="12" sm="3" md="3">
             <v-card class="ma-8 d-flex flex-column align-center">
-              <v-img class="mt-4" :src="'src/assets/home/' + card.img" aspect-ratio="1" width="50%"></v-img>
+              <v-img class="mt-4" :src="'home/' + card.img" aspect-ratio="1" width="50%"></v-img>
               <v-card-text>
                 <p class="text-center">{{ card.description }}</p>
               </v-card-text>
