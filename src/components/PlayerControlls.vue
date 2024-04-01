@@ -1,8 +1,7 @@
 <template>
-    <v-btn @click="$router.push('/styler')" icon="mdi-arrow-left" color="primary" class="mx-2"></v-btn>
-    <v-btn v-if="player.play" @click="player.play = false" icon="mdi-pause" color="primary" class="mx-2"></v-btn>
-    <v-btn v-if="!player.play" @click="player.play = true" icon="mdi-play" color="primary" class="mx-2"></v-btn>
-    <v-btn @click="player.restart()" icon="mdi-restart" color="primary" class="mx-2"></v-btn>
+    <v-btn v-if="player.play" @click="player.play = false" icon="mdi-pause" color="primary" class="mr-2"></v-btn>
+    <v-btn v-if="!player.play" @click="player.play = true" icon="mdi-play" color="primary" class="mr-2"></v-btn>
+    <v-btn @click="player.restart()" icon="mdi-restart" color="primary" class="mx-2" density="comfortable"></v-btn>
 </template>
 
 <script setup>

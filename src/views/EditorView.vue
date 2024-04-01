@@ -77,9 +77,9 @@ const editSizeImage = (index, width) => {
         </li>
       </template>
     </draggable>
-    <div class="d-flex justify-center mt-2">
-      <v-btn prepend-icon="mdi-plus" class="ma-4" @click="addParagraph">Añadir párrafo</v-btn>
-      <v-btn prepend-icon="mdi-image" class="ma-4" @click="addImage()">Añadir imagen</v-btn>
+    <div class="d-flex justify-center flex-wrap mt-2">
+      <v-btn prepend-icon="mdi-plus" class="ma-2" @click="addParagraph">Añadir párrafo</v-btn>
+      <v-btn prepend-icon="mdi-image" class="ma-2" @click="addImage()">Añadir imagen</v-btn>
     </div>
   </main>
   <v-dialog

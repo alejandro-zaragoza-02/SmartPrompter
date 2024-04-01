@@ -50,7 +50,7 @@ const autoScroll = () => {
 
   switch (store.config.styles.mode) {
     case 'Continuo':
-      player.intervalId = setInterval(startModeContinuos, 100 / store.config.styles.speed)
+      player.intervalId = setInterval(startModeContinuos, 100 / (store.config.styles.speed * 3))
       break
     case 'Reconocimiento de voz':
       initVoiceRecognition()

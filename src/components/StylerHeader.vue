@@ -39,7 +39,7 @@ const checkAudioConfigErrors = async () => {
       <img src="/logo.png" alt="" height="50" width="50" class="mx-2">
       <h1 class="text-xs-h6 text-md-h5 header-title">SmartPrompter</h1>
     </v-col>
-    <v-col cols="4" class="text-center">
+    <v-col cols="4" class="text-center pa-0">
       <p class="text-sm-h6 text-md-h5">EDITOR VISUAL</p>
     </v-col>
     <v-col cols="4" class="text-right">

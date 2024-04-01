@@ -4,7 +4,7 @@
       <img src="/logo.png" alt="" height="50" width="50" class="mx-2">
       <h1 class="text-xs-h6 text-md-h5 header-title">SmartPrompter</h1>
     </v-col>
-    <v-col class="text-center" cols="4">
+    <v-col class="text-center pa-0" cols="4">
           <div v-if="store.config.styles.mode === 'Continuo'">
             <PlayerControlls></PlayerControlls>
           </div>

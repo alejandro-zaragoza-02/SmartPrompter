@@ -19,7 +19,7 @@ const cardsInfo = [
   },
   {
     img: 'microfono.svg',
-    description: 'Disponible con control de voz'
+    description: 'Reconocimiento de voz'
   },
 ]
 
@@ -50,24 +50,24 @@ const icons = [
 
       <v-container>
         <v-row no-gutters>
-          <v-col cols="12" xs="12" sm="5" class="pa-4">
+          <v-col cols="12" xs="12" md="5" class="pa-4">
             <div class="d-flex flex-column align-center">
               <v-img src="logo.png" width="200" height="200"></v-img>
               <h1>SmartPrompter</h1>
               <v-btn class="mt-4" @click="$router.push('/editor')">Empezar a usar</v-btn>
             </div>
           </v-col>
-          <v-col cols="12" xs="12" sm="7" class="pa-4">
+          <v-col cols="12" xs="12" md="7" class="pa-4">
             <v-textarea v-model="store.contents[0].data" class="caption" label="Escribe texto..." variant="outlined"
-              rows="11" autofocus no-resize hide-details></v-textarea>
+              rows="11" autofocus no-resize hide-details spellcheck="false"></v-textarea>
           </v-col>
         </v-row>
       </v-container>
       <v-container>
-        <v-row no-gutters>
-          <v-col v-for="card in cardsInfo" cols="12" xs="12" sm="3" md="3">
-            <v-card class="ma-8 d-flex flex-column align-center">
-              <v-img class="mt-4" :src="'home/' + card.img" aspect-ratio="1" width="50%"></v-img>
+        <v-row>
+          <v-col v-for="card in cardsInfo" cols="12" xs="12" sm="6" md="3">
+            <v-card class="d-flex flex-column align-center">
+              <v-img class="mt-4" :src="'home/' + card.img" aspect-ratio="1" width="100px"></v-img>
               <v-card-text>
                 <p class="text-center">{{ card.description }}</p>
               </v-card-text>
