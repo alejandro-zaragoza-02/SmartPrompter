@@ -54,7 +54,10 @@ const icons = [
             <div class="d-flex flex-column align-center">
               <v-img src="logo.png" width="200" height="200"></v-img>
               <h1>SmartPrompter</h1>
-              <v-btn class="mt-4" @click="$router.push('/editor')">Empezar a usar</v-btn>
+              <div class="d-flex align-center pa-4">
+                <v-btn class="mr-4" @click="$router.push('/editor')">Empezar a usar</v-btn>
+                <v-btn @click="$router.push('/help')" variant="plain" density="compact" size="small" icon="mdi-help"></v-btn>
+              </div>
             </div>
           </v-col>
           <v-col cols="12" xs="12" md="7" class="pa-4">

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import HelpView from '../views/HelpView.vue'
 import EditorView from '../views/EditorView.vue'
 import PlayerView from '../views/PlayerView.vue'
 import SliderView from '../views/SliderView.vue'
@@ -13,6 +14,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView
+    },
+    {
+      path: '/help',
+      name: 'help',
+      component: HelpView
     },
     {
       path: '/editor',
@@ -33,7 +39,11 @@ const router = createRouter({
       path: '/player',
       name: 'player',
       component: PlayerView
-    }
+    },
+    {
+      path: '/:catchAll(.*)',
+      redirect: { name: 'home' }
+    },
   ]
 })
 
