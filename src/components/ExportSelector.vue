@@ -15,7 +15,7 @@
                         @click="downloadConfig.content = (downloadConfig.content !== type.title) ? type.title : null">
                         <div class="down-btn" :class="(type.title === downloadConfig.content) ? 'selected' : ''">
                             <v-row>
-                                <v-img class="ma-2" :src="`src/assets/editor/download-types/${type.img}`"></v-img>
+                                <v-img class="ma-2" :src="`src/assets/editor-assets/download-types/${type.img}`"></v-img>
                             </v-row>
                             <v-row>
                                 <p class="w-100 text-center text-no-wrap card-text">{{ type.title }}</p>
@@ -29,7 +29,7 @@
                         @click="downloadConfig.type = (downloadConfig.type !== type.title) ? type.title : null">
                         <div class="down-btn" :class="(type.title === downloadConfig.type) ? 'selected' : ''">
                             <v-row>
-                                <v-img class="ma-2" :src="`src/assets/editor/download-formats/${type.img}`"></v-img>
+                                <v-img class="ma-2" :src="`src/assets/editor-assets/download-formats/${type.img}`"></v-img>
                             </v-row>
                             <v-row>
                                 <p class="w-100 text-center text-no-wrap card-text">{{ type.title }}</p>

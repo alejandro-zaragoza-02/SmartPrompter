@@ -9,7 +9,7 @@ export const useConfigStore = defineStore('config', () => {
     },
     // {
     //   type: 'image',
-    //   data: 'editor/add-image.png',
+    //   data: 'editor-assets/add-image.png',
     //   config: {
     //     width: 10,
     //   }

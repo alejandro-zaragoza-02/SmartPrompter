@@ -19,7 +19,7 @@ const addParagraph = () => {
 const addImage = () => {
   store.contents.push({
     type: 'image',
-    data: 'editor/add-image.png',
+    data: 'editor-assets/add-image.png',
     config: {
       width: 25
     }
