@@ -71,7 +71,7 @@ const contents = [
                <ul>
                 <li class="list">Modo continuo: en este modo podrás establecer una velocidad a la que deseas que baje el contenido que quieres reproducir, esta velocidad será continua.</li>
                 <li class="list">Modo dispositivas: en este modo el contenido esta estático y para avanzar entre las diferentes dispositivas deberás hacer uso de los botones de la barra superior o usar las fleshas del teclado ⬅️ y ➡️.</li>
-                <li class="list">Modo de reconocimiento de voz: en este modo el contenido avanzará hacia abajo según tu velocidad de lectura, ya que la app reconocerá tu voz y la sincronizará con el texto. En este modo puedes ajustar tanto el margen de error a la hora de reconocer una palabra, como la ventana de análisis, que establece el número de palabras hacia delante que tendrá en cuenta a la hora de analizar.</li>
+                <li class="list">Modo inteligente: en este modo el contenido avanzará hacia abajo según tu velocidad de lectura, ya que la app reconocerá tu voz y la sincronizará con el texto. En este modo puedes ajustar tanto el margen de error a la hora de reconocer una palabra, como la ventana de análisis, que establece el número de palabras hacia delante que tendrá en cuenta a la hora de analizar.</li>
                </ul>`
     },
     {

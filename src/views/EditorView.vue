@@ -105,7 +105,7 @@ const editSizeImage = (index, width) => {
     </v-dialog>
 </template>
 
-<style>
+<style scoped>
 
 li {
   list-style: none;

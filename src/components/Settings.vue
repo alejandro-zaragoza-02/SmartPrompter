@@ -137,18 +137,18 @@ const saveConfig = () => {
                 :ripple="false">Continuo</v-btn>
               <v-btn value="Diapositivas" prepend-icon="mdi-play-box-outline" class="flex-grow-1 py-3"
                 :ripple="false">Diapositivas</v-btn>
-              <v-btn value="Reconocimiento de voz" prepend-icon="mdi-microphone" class="flex-grow-1 py-3"
-                :ripple="false">Reconocimiento de voz</v-btn>
+              <v-btn value="Inteligente" prepend-icon="mdi-microphone" class="flex-grow-1 py-3"
+                :ripple="false">Inteligente</v-btn>
             </v-btn-toggle>
           </v-list-item>
           <v-list-item v-if="mode === 'Continuo'" :title="`Velocidad de reproducción: ${speed.toString()}`">
             <v-slider class="px-4" v-model="speed" min="1" max="9" step="1" hide-details></v-slider>
           </v-list-item>
-          <v-list-item v-if="mode === 'Reconocimiento de voz'"
+          <v-list-item v-if="mode === 'Inteligente'"
             :title="`Ventana de reconocimiento: ${window.toString()}`">
             <v-slider class="px-4" v-model="window" min="1" max="9" step="1" hide-details></v-slider>
           </v-list-item>
-          <v-list-item v-if="mode === 'Reconocimiento de voz'" :title="`Margen de error: ${error.toString()}`">
+          <v-list-item v-if="mode === 'Inteligente'" :title="`Margen de error: ${error.toString()}`">
             <v-slider class="px-4" v-model="error" min="0.1" max="0.5" step="0.1" hide-details></v-slider>
           </v-list-item>
           <v-divider class="mt-2"></v-divider>

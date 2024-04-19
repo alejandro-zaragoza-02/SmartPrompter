@@ -77,7 +77,7 @@ let getFlipY = () => { return (store.config.styles.mirrorY ? -1 : 1) }
   </main>
 </template>
 
-<style>
+<style scoped>
 .said {
   opacity: 0.5;
 }

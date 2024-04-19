@@ -54,7 +54,7 @@ const checkAudioConfigErrors = async () => {
       <v-row>
           <!-- <v-select v-if="store.config.styles.mode === 'Continuo'" :items="[1, 2, 3, 4, 5, 6, 7, 8, 9]" v-model="store.config.styles.speed"
             prepend-inner-icon="mdi-speedometer" hide-details density="compact" class="speed" variant="solo"></v-select>
-          <v-select v-if="store.config.styles.mode === 'Reconocimiento de voz'" :items="[0.2, 0.3, 0.4]" v-model="store.config.voice.recognitionThreshold"
+          <v-select v-if="store.config.styles.mode === 'Inteligente'" :items="[0.2, 0.3, 0.4]" v-model="store.config.voice.recognitionThreshold"
             prepend-inner-icon="mdi-unfold-more-vertical" hide-details density="compact" class="speed" variant="solo"></v-select> -->
           <v-col class="center">
               <v-combobox :items="[8, 9, 10, 11, 12, 14, 18, 24, 30, 36, 48, 60, 72, 96]"

@@ -5,7 +5,7 @@ export const useConfigStore = defineStore('config', () => {
   const contents = ref([
     {
       type: 'text',
-      data: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed libero tellus, vehicula ac semper ut, facilisis imperdiet nisi. Sed faucibus, risus ac rhoncus feugiat, nunc lorem tincidunt turpis, sed tempor nisi urna vel sapien. Pellentesque ornare scelerisque consectetur. Duis at viverra velit. Donec et tortor interdum, egestas felis ultrices, cursus ipsum. Aenean sed vehicula nulla. Aliquam consectetur odio justo, et dapibus quam efficitur non.'
+      data: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed libero tellus, vehicula ac semper ut, facilisis imperdiet nisi. Sed faucibus, risus ac rhoncus feugiat, nunc lorem tincidunt turpis, sed tempor nisi urna vel sapien.'
     },
     // {
     //   type: 'image',
@@ -25,7 +25,7 @@ export const useConfigStore = defineStore('config', () => {
   ]);
   const config = {
     styles: {
-      mode: ref('Reconocimiento de voz'),
+      mode: ref('Continuo'),
       speed: ref(5),
       fontSize: ref(48),
       fontFamily: ref('Arial'),

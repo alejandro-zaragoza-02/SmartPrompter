@@ -8,7 +8,7 @@
           <div v-if="store.config.styles.mode === 'Continuo'">
             <PlayerControlls></PlayerControlls>
           </div>
-          <div v-if="store.config.styles.mode === 'Reconocimiento de voz'" class="d-flex justify-center">
+          <div v-if="store.config.styles.mode === 'Inteligente'" class="d-flex justify-center">
             <VoiceControlls></VoiceControlls>
           </div>
           <div v-if="store.config.styles.mode === 'Diapositivas'">

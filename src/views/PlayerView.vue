@@ -52,7 +52,7 @@ const autoScroll = () => {
     case 'Continuo':
       player.intervalId = setInterval(startModeContinuos, 100 / (store.config.styles.speed * 3))
       break
-    case 'Reconocimiento de voz':
+    case 'Inteligente':
       initVoiceRecognition()
       // navigator.mediaDevices.getUserMedia({
       //   audio: {
@@ -292,7 +292,7 @@ onUnmounted(() => {
   </main>
 </template>
 
-<style>
+<style scoped>
 
 .said{
   opacity: 0.5;
