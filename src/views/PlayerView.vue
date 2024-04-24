@@ -241,6 +241,7 @@ const startModeContinuos = () => {
     }
   }
 }
+
 onMounted(() => {
   if (store.config.styles.mode === 'Diapositivas') {
     router.push('/slider')
@@ -263,10 +264,9 @@ onUnmounted(() => {
 
 <template>
   <Header />
-  <main id="scrollContainer" style="height:100%; overflow-y: scroll;">
+  <main id="scrollContainer" :style="{ backgroundColor: store.config.styles.backgroundColor }">
     <div style="height: 40%;"></div>
     <div :style="{
-      backgroundColor: store.config.styles.backgroundColor,
       textAlign: getAlign(),
       fontSize: store.config.styles.fontSize + 'px',
       lineHeight: store.config.styles.lineSpacing,
@@ -293,6 +293,11 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+#scrollContainer {
+  height: 100%;
+  overflow-y: scroll;
+}
+
 .said {
   opacity: 0.5;
 }

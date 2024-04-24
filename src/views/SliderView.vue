@@ -10,7 +10,7 @@ const store = useConfigStore()
 const player = usePlayerStore()
 
 onMounted(() => {
-  if(store.config.styles.mode !== 'Diapositivas'){
+  if (store.config.styles.mode !== 'Diapositivas') {
     router.push('/player')
   }
 })
@@ -62,6 +62,7 @@ let getFlipY = () => { return (store.config.styles.mirrorY ? -1 : 1) }
       transform: `scale(${getFlipX()},${getFlipY()})`,
       fontFamily: store.config.styles.fontFamily,
       paddingInline: store.config.styles.margin[0] + '%',
+      minHeight: '100%',
     }">
       <div v-if="store.contents[store.config.styles.slide].type === 'text'">
         <p v-for="parragraph in store.contents[store.config.styles.slide].data.split('\n')">
@@ -71,8 +72,9 @@ let getFlipY = () => { return (store.config.styles.mirrorY ? -1 : 1) }
           <br>
         </p>
       </div>
-      <v-img v-if="store.contents[store.config.styles.slide].type === 'image'" :width="`${store.contents[store.config.styles.slide].config.width}%`"
-        :id="`img-${store.config.styles.slide}`" :src="store.contents[store.config.styles.slide].data" :style="{ margin: getAligImg() }"></v-img>
+      <v-img v-if="store.contents[store.config.styles.slide].type === 'image'"
+        :width="`${store.contents[store.config.styles.slide].config.width}%`" :id="`img-${store.config.styles.slide}`"
+        :src="store.contents[store.config.styles.slide].data" :style="{ margin: getAligImg() }"></v-img>
     </div>
   </main>
 </template>

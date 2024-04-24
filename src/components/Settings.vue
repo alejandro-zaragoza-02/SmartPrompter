@@ -142,10 +142,9 @@ const saveConfig = () => {
             </v-btn-toggle>
           </v-list-item>
           <v-list-item v-if="mode === 'Continuo'" :title="`Velocidad de reproducción: ${speed.toString()}`">
-            <v-slider class="px-4" v-model="speed" min="1" max="9" step="1" hide-details></v-slider>
+            <v-slider class="px-4" v-model="speed" min="1" max="99" step="1" hide-details></v-slider>
           </v-list-item>
-          <v-list-item v-if="mode === 'Inteligente'"
-            :title="`Ventana de reconocimiento: ${window.toString()}`">
+          <v-list-item v-if="mode === 'Inteligente'" :title="`Ventana de reconocimiento: ${window.toString()}`">
             <v-slider class="px-4" v-model="window" min="1" max="9" step="1" hide-details></v-slider>
           </v-list-item>
           <v-list-item v-if="mode === 'Inteligente'" :title="`Margen de error: ${error.toString()}`">
@@ -158,9 +157,9 @@ const saveConfig = () => {
               v-model="micro" class="mt-2"></v-select>
             <v-autocomplete label="Idioma" variant="outlined" :items="languages" item-title="title" item-value="code"
               v-model="lang" :rules="[
-      (val) =>
-        (val && val.length > 0) || 'Debe seleccionar un idioma',
-    ]"></v-autocomplete>
+                (val) =>
+                  (val && val.length > 0) || 'Debe seleccionar un idioma',
+              ]"></v-autocomplete>
           </v-list-item>
           <v-list-item
             subtitle="Grabar el audio del micrófono seleccionado para poder escuchar y descargar una vez finalizada la reproducción"
@@ -212,7 +211,8 @@ const saveConfig = () => {
             <v-col cols="12" md="6">
               <ExportSelector></ExportSelector>
             </v-col>
-            <v-snackbar v-model="snackbar.value" timeout="2000" :color="snackbar.color"><v-icon :icon="snackbar.icon" class="mr-2"></v-icon>{{ snackbar.text }}</v-snackbar>
+            <v-snackbar v-model="snackbar.value" timeout="2000" :color="snackbar.color"><v-icon :icon="snackbar.icon"
+                class="mr-2"></v-icon>{{ snackbar.text }}</v-snackbar>
           </v-row>
         </v-list>
       </v-card>

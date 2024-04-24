@@ -42,30 +42,29 @@ const getFlipY = () => { return (store.config.styles.mirrorY ? -1 : 1) }
 
 <template>
   <Header />
-  <main>
+  <main :style="{ backgroundColor: store.config.styles.backgroundColor, minHeight: '100%', }">
     <p :style="{
-      backgroundColor: store.config.styles.backgroundColor,
       fontSize: store.config.styles.fontSize + 'px',
       textAlign: getAlign(),
       lineHeight: store.config.styles.lineSpacing,
       color: store.config.styles.textColor,
       transform: `scale(${getFlipX()},${getFlipY()})`,
       fontFamily: store.config.styles.fontFamily,
-      paddingInline: store.config.styles.margin[0] + '%'
+      paddingInline: store.config.styles.margin[0] + '%',
     }" class="pt-4">
-      <div v-for="(content, index) in store.contents">
-        <p v-if="content.type === 'text'">
-          <p v-for="parragraph in content.data.split('\n')">
-            {{ parragraph }}
-          </p>
-        </p>
-        <v-img v-if="content.type === 'image'" :width="`${content.config.width}%`" :id="`img-${index}`"
-          :src="content.data" :style="{ margin: getAligImg() }">
-        </v-img>
-        <br>
-        <input v-if="content.type === 'image'" v-show="false" :id="`inpFile-${index}`" type="file"
-          @change="changeImage(index)">
-      </div>
+    <div v-for="(content, index) in store.contents">
+      <p v-if="content.type === 'text'">
+      <p v-for="parragraph in content.data.split('\n')">
+        {{ parragraph }}
+      </p>
+      </p>
+      <v-img v-if="content.type === 'image'" :width="`${content.config.width}%`" :id="`img-${index}`"
+        :src="content.data" :style="{ margin: getAligImg() }">
+      </v-img>
+      <br>
+      <input v-if="content.type === 'image'" v-show="false" :id="`inpFile-${index}`" type="file"
+        @change="changeImage(index)">
+    </div>
     </p>
   </main>
 </template>
