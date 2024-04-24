@@ -17,7 +17,8 @@
       color="primary"></v-btn>
     <v-btn v-if="player.play" @click="player.play = false" icon="mdi-pause" color="primary"></v-btn>
     <v-btn v-if="!player.play" @click="player.play = true" icon="mdi-play" color="primary"></v-btn>
-    <v-btn @click="player.restart()" icon="mdi-restart" color="primary" density="comfortable"></v-btn>
+    <v-btn @click="player.restart(); player.reset = true" icon="mdi-restart" color="primary"
+      density="comfortable"></v-btn>
   </div>
 </template>
 

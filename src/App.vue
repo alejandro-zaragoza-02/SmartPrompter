@@ -12,7 +12,6 @@ const fileName = ref('')
 const fileExtension = ref('OGG')
 
 watch(player, (newAudioFile) => {
-  console.log(newAudioFile.audioFile)
   modal.value = newAudioFile.audioFile.length > 0 && newAudioFile.audioFile[0]?.size > 25000
 })
 
@@ -53,9 +52,10 @@ const loadAudio = () => {
       </v-toolbar>
       <v-card-text>
         <p>Se ha detectado una grabación de audio. ¿Quieres descargarlo?</p>
-        <v-container >
+        <v-container>
           <div v-show="player.audioFile.length > 0 && !loadingAudio" class="audioInput">
-            <audio class="w-100 h-100" controls :src="getSrc()" controlslist="nodownload" :oncanplaythrough="loadAudio"></audio>
+            <audio class="w-100 h-100" controls :src="getSrc()" controlslist="nodownload"
+              :oncanplaythrough="loadAudio"></audio>
           </div>
           <div v-if="loadingAudio" class="audioInput d-flex align-center">
             <v-progress-linear indeterminate></v-progress-linear>
@@ -71,17 +71,15 @@ const loadAudio = () => {
         </v-row>
       </v-card-text>
       <template v-slot:actions>
-        <v-btn class="ms-auto" text="Descargar" block @click="downloadAudio()" variant="elevated"</v-btn>
+        <v-btn class="ms-auto" text="Descargar" block @click="downloadAudio()" variant="elevated" </v-btn>
       </template>
     </v-card>
   </v-dialog>
 </template>
 
 <style scoped>
-
-.audioInput{
+.audioInput {
   height: 4em;
   margin-bottom: .5em
 }
-
 </style>

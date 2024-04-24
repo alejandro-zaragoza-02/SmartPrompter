@@ -1,5 +1,5 @@
 <script setup>
-import { onUnmounted } from 'vue'
+import { onUnmounted, watch } from 'vue'
 import Header from '@/components/PlayerHeader.vue'
 import { useConfigStore } from '@/stores/config'
 import { usePlayerStore } from '@/stores/player'
@@ -50,7 +50,7 @@ const autoScroll = () => {
 
   switch (store.config.styles.mode) {
     case 'Continuo':
-      player.intervalId = setInterval(startModeContinuos, 100 / (store.config.styles.speed * 3))
+      startModeContinuos()
       break
     case 'Inteligente':
       initVoiceRecognition()
@@ -229,18 +229,47 @@ const levenshtein = (a, b) => {
 const startModeContinuos = () => {
   const scrollContainer = document.getElementById('scrollContainer')
   if (!scrollContainer) return
-  scrollContainer.scroll({
-    top: player.scrollTop,
-    left: 0,
-    behavior: 'auto'
-  })
-  if (player.play) {
-    player.scrollTop += 1
-    if (player.scrollTop + scrollContainer.clientHeight === scrollContainer.scrollHeight) {
+  if (player.reset) {
+    scrollContainer.scrollTop = 0
+  }
+  const scrollHeight = scrollContainer.scrollHeight;
+  const containerHeight = scrollContainer.clientHeight;
+  const maxScrollTop = scrollHeight - containerHeight;
+  let accumulativeSteps = 0
+
+  const step = () => {
+    const currentScrollTop = scrollContainer.scrollTop;
+    if (player.play && currentScrollTop < maxScrollTop) {
+      let steps = 0
+      if ((store.config.styles.speed / 10) < 1) {
+        accumulativeSteps += store.config.styles.speed / 10
+        if (accumulativeSteps >= 1) {
+          steps = accumulativeSteps
+          accumulativeSteps = 0
+        }
+      } else {
+        steps = (store.config.styles.speed / 10)
+      }
+      scrollContainer.scrollTop = currentScrollTop + steps
+      requestAnimationFrame(step);
+    } else {
       player.play = false
     }
   }
+
+  step();
 }
+
+watch(player, newPlayer => {
+  if (newPlayer.play) {
+    console.log('play')
+    startModeContinuos()
+  }
+  if (newPlayer.reset) {
+    startModeContinuos()
+    player.reset = false
+  }
+})
 
 onMounted(() => {
   if (store.config.styles.mode === 'Diapositivas') {

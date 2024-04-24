@@ -2,15 +2,12 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
 export const usePlayerStore = defineStore('player', () => {
-  
   const play = ref(false)
-  const time = ref(0)
+  const reset = ref(false)
   const pointer = ref({
     parragraph: 0,
     word: 0
   })
-  const scrollTop = ref(0)
-  const scrollIntervalId = ref(0)
   const timeIntervalId = ref(0)
 
   const lastWordSaid = ref('Escuchando...')
@@ -19,9 +16,7 @@ export const usePlayerStore = defineStore('player', () => {
   const audioFile = ref([])
 
   const restart = () => {
-    play.value = 0
-    time.value = 0
-    scrollTop.value = 0
+    play.value = false
     pointer.value.parragraph = 0
     pointer.value.word = 0
     lastWordSaid.value = 'Escuchando...'
@@ -29,5 +24,14 @@ export const usePlayerStore = defineStore('player', () => {
     audioFile.value = []
   }
 
-  return { play, time, pointer, scrollTop, scrollIntervalId, timeIntervalId, lastWordSaid, lastWordPosition, audioFile, restart }
+  return {
+    play,
+    reset,
+    pointer,
+    timeIntervalId,
+    lastWordSaid,
+    lastWordPosition,
+    audioFile,
+    restart
+  }
 })
