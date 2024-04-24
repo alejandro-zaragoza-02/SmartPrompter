@@ -6,7 +6,7 @@ export const useConfigStore = defineStore('config', () => {
     {
       type: 'text',
       data: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed libero tellus, vehicula ac semper ut, facilisis imperdiet nisi. Sed faucibus, risus ac rhoncus feugiat, nunc lorem tincidunt turpis, sed tempor nisi urna vel sapien.'
-    },
+    }
     // {
     //   type: 'image',
     //   data: 'editor-assets/add-image.png',
@@ -22,20 +22,20 @@ export const useConfigStore = defineStore('config', () => {
     //   type: 'text',
     //   data: 'En algunos casos se controlan a través de un pedal en los pies del presentador que, al pisarlo, hace avanzar el texto y, si deja de pisarlo, este se detiene. De este modo, el sujeto puede leer con comodidad y a su ritmo. En otras ocasiones, es controlado por un operador que debe llevar el ritmo del narrador, para que la lectura se note natural y pausada. Por lo regular, debe estar instalado en todas las cámaras que se usan a la hora de una transmisión.'
     // }
-  ]);
+  ])
   const config = {
     styles: {
       mode: ref('Continuo'),
       speed: ref(5),
       fontSize: ref(48),
-      fontFamily: ref('Arial'),
+      fontFamily: ref('Roboto'),
       textColor: ref('#000000'),
       backgroundColor: ref('#FFFFFF'),
       lineSpacing: ref(1.5),
       textJustify: ref(0),
       mirrorY: ref(false),
       mirrorX: ref(false),
-      margin: ref([10,90]),
+      margin: ref([10, 90]),
       slide: ref(0)
     },
     voice: {
@@ -47,15 +47,15 @@ export const useConfigStore = defineStore('config', () => {
       wordWindow: ref(5),
       voiceCommands: ref({
         Continuo: {
-            play: [],
-            pause: [],
-            restart: []
+          play: [],
+          pause: [],
+          restart: []
         },
         Dispositivas: {
-            back: [],
-            next: []
+          back: [],
+          next: []
         }
-    })
+      })
     }
   }
 

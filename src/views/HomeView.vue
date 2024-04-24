@@ -65,32 +65,31 @@ const icons = [
             <v-textarea v-model="store.contents[0].data" class="caption" label="Escribe texto..." variant="outlined"
               rows="6" autofocus no-resize hide-details spellcheck="false"></v-textarea>
             <v-btn-toggle v-model="store.config.styles.mode" mandatory color="indigo-lighten-5"
-              class="d-flex flex-row mt-4 h-auto">
-                <v-btn value="Continuo" class="flex-grow-1 pa-4"
-                  :ripple="false">
-                  <div class="d-flex flex-column justify-center align-center">
-                    <v-icon icon="mdi-timer-cog-outline" class="mb-2" size="x-large"></v-icon>
-                    <p>Continuo</p>
-                  </div>
-                </v-btn>
-                <v-btn value="Diapositivas" class="flex-grow-1 pa-4"
-                  :ripple="false">
-                  <div class="d-flex flex-column justify-center align-center">
-                    <v-icon icon="mdi-play-box-outline" class="mb-2" size="x-large"></v-icon>
-                    <p>Diapositivas</p>
-                  </div>
-                </v-btn>
-                <v-btn value="Inteligente" class="flex-grow-1 pa-4"
-                  :ripple="false">
-                  <div class="d-flex flex-column justify-center align-center">
-                    <v-icon icon="mdi-microphone" class="mb-2" size="x-large"></v-icon>
-                    <p>Inteligente</p>
-                  </div>
-                </v-btn>
+              class="d-flex flex-row flex-wrap mt-4 h-auto">
+              <v-btn value="Continuo" class="flex-grow-1 pa-4" :ripple="false">
+                <div class="d-flex flex-column justify-center align-center">
+                  <v-icon icon="mdi-timer-cog-outline" class="mb-2" size="x-large"></v-icon>
+                  <p>Continuo</p>
+                </div>
+              </v-btn>
+              <v-btn value="Diapositivas" class="flex-grow-1 pa-4" :ripple="false">
+                <div class="d-flex flex-column justify-center align-center">
+                  <v-icon icon="mdi-play-box-outline" class="mb-2" size="x-large"></v-icon>
+                  <p>Diapositivas</p>
+                </div>
+              </v-btn>
+              <v-btn value="Inteligente" class="flex-grow-1 pa-4" :ripple="false">
+                <div class="d-flex flex-column justify-center align-center">
+                  <v-icon icon="mdi-microphone" class="mb-2" size="x-large"></v-icon>
+                  <p>Inteligente</p>
+                </div>
+              </v-btn>
             </v-btn-toggle>
-            <p v-show="store.config.styles.mode === 'Inteligente'" class="text-orange-accent-3 font-italic warning mt-1">
+            <p v-show="store.config.styles.mode === 'Inteligente'"
+              class="text-orange-accent-3 font-italic warning mt-1">
               <v-icon icon="mdi-alert" size="x-small"></v-icon>
-              El modo inteligente usa una API de Google gratuita, por lo que la exactitud del reconocimiento no está asegurado.
+              El modo inteligente usa una API de Google gratuita, por lo que la exactitud del reconocimiento no está
+              asegurado.
             </p>
           </v-col>
         </v-row>

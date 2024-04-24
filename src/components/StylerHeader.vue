@@ -52,105 +52,105 @@ const checkAudioConfigErrors = async () => {
   <div class="bg-grey-darken-1">
     <v-container>
       <v-row>
-          <!-- <v-select v-if="store.config.styles.mode === 'Continuo'" :items="[1, 2, 3, 4, 5, 6, 7, 8, 9]" v-model="store.config.styles.speed"
+        <!-- <v-select v-if="store.config.styles.mode === 'Continuo'" :items="[1, 2, 3, 4, 5, 6, 7, 8, 9]" v-model="store.config.styles.speed"
             prepend-inner-icon="mdi-speedometer" hide-details density="compact" class="speed" variant="solo"></v-select>
           <v-select v-if="store.config.styles.mode === 'Inteligente'" :items="[0.2, 0.3, 0.4]" v-model="store.config.voice.recognitionThreshold"
             prepend-inner-icon="mdi-unfold-more-vertical" hide-details density="compact" class="speed" variant="solo"></v-select> -->
-          <v-col class="center">
-              <v-combobox :items="[8, 9, 10, 11, 12, 14, 18, 24, 30, 36, 48, 60, 72, 96]"
-                v-model="store.config.styles.fontSize" prepend-inner-icon="mdi-format-font-size-increase" hide-details
-                density="compact" class="textSize" variant="solo"></v-combobox>
-          </v-col>
-          <v-col class="center">
-            <v-select
-                :items="['Roboto', 'Arial', 'Courier New', 'Calibri', 'Verdana', 'Georgia', 'Gill Sans', 'Segoe UI', 'Tahoma', 'Geneva', 'Cambria', 'Cochin', 'Impact']"
-                v-model="store.config.styles.fontFamily" prepend-inner-icon="mdi-format-size" hide-details density="compact"
-                class="fontFamily ml-2" variant="solo"></v-select>
-          </v-col>
-    
-          <v-col class="center colorPicker">
-            <div class="mr-2">
-              <v-icon icon="mdi-format-color-fill" class="mr-1"></v-icon>
-              <v-btn @click="colorFillDialog = true" :color="store.config.styles.backgroundColor">
-                <v-dialog v-model="colorFillDialog" width="auto">
-                  <v-card>
-                    <v-card-text>
-                      <v-color-picker v-model="store.config.styles.backgroundColor" hide-inputs></v-color-picker>
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-btn block @click="colorFillDialog = false">Cerrar</v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </v-btn>
-            </div>
-            <div>
-              <v-icon icon="mdi-format-color-text" class="mr-1"></v-icon>
-              <v-btn @click="colorTextDialog = true;" :color="store.config.styles.textColor">
-                <v-dialog v-model="colorTextDialog" width="auto">
-                  <v-card>
-                    <v-card-text>
-                      <v-color-picker v-model="store.config.styles.textColor" hide-inputs></v-color-picker>
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-btn block @click="colorTextDialog = false">Cerrar</v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </v-btn>
-            </div>
-          </v-col>
-          <v-col class="center">
-            <v-combobox v-model="store.config.styles.lineSpacing" :items="[0.5, 1.0, 1.5, 2.0, 2.5, 3.0]"
-              prepend-inner-icon="mdi-format-font-size-increase" hide-details density="compact" class="lineSpacing"
-              variant="solo"></v-combobox>
-          </v-col>
-          <v-col class="center">
-            <v-btn-toggle v-model="store.config.styles.textJustify" mandatory divided>
-              <v-btn size="small" icon="mdi-format-align-left"></v-btn>
-              <v-btn size="small" icon="mdi-format-align-center"></v-btn>
-              <v-btn size="small" icon="mdi-format-align-right"></v-btn>
-              <v-btn size="small" icon="mdi-format-align-justify"></v-btn>
-            </v-btn-toggle>
-          </v-col>
-          <v-col class="center icons">
-            <label :class="store.config.styles.mirrorX ? 'selected' : ''">
-              <v-icon icon="mdi-flip-horizontal"></v-icon>
-              <input type="checkbox" v-model="store.config.styles.mirrorX" style="display: none;">
-            </label>
-            <label :class="store.config.styles.mirrorY ? 'selected' : ''">
-              <v-icon icon="mdi-flip-vertical"></v-icon>
-              <input type="checkbox" v-model="store.config.styles.mirrorY" style="display: none;">
-            </label>
-            <Settings></Settings>
-          </v-col>
-        </v-row>
+        <v-col class="center">
+          <v-combobox :items="[8, 9, 10, 11, 12, 14, 18, 24, 30, 36, 48, 60, 72, 96]"
+            v-model="store.config.styles.fontSize" prepend-inner-icon="mdi-format-font-size-increase" hide-details
+            density="compact" class="textSize" variant="solo"></v-combobox>
+        </v-col>
+        <v-col class="center">
+          <v-select
+            :items="['Arimo', 'Quicksand', 'Kanit', 'Merriweather', 'Nunito', 'Oswald', 'Monserrat', 'Open Sans', 'Roboto']"
+            v-model="store.config.styles.fontFamily" prepend-inner-icon="mdi-format-size" hide-details density="compact"
+            class="fontFamily ml-2" variant="solo"></v-select>
+        </v-col>
+
+        <v-col class="center colorPicker">
+          <div class="mr-2">
+            <v-icon icon="mdi-format-color-fill" class="mr-1"></v-icon>
+            <v-btn @click="colorFillDialog = true" :color="store.config.styles.backgroundColor">
+              <v-dialog v-model="colorFillDialog" width="auto">
+                <v-card>
+                  <v-card-text>
+                    <v-color-picker v-model="store.config.styles.backgroundColor" hide-inputs></v-color-picker>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-btn block @click="colorFillDialog = false">Cerrar</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-btn>
+          </div>
+          <div>
+            <v-icon icon="mdi-format-color-text" class="mr-1"></v-icon>
+            <v-btn @click="colorTextDialog = true;" :color="store.config.styles.textColor">
+              <v-dialog v-model="colorTextDialog" width="auto">
+                <v-card>
+                  <v-card-text>
+                    <v-color-picker v-model="store.config.styles.textColor" hide-inputs></v-color-picker>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-btn block @click="colorTextDialog = false">Cerrar</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-btn>
+          </div>
+        </v-col>
+        <v-col class="center">
+          <v-combobox v-model="store.config.styles.lineSpacing" :items="[0.5, 1.0, 1.5, 2.0, 2.5, 3.0]"
+            prepend-inner-icon="mdi-format-font-size-increase" hide-details density="compact" class="lineSpacing"
+            variant="solo"></v-combobox>
+        </v-col>
+        <v-col class="center">
+          <v-btn-toggle v-model="store.config.styles.textJustify" mandatory divided>
+            <v-btn size="small" icon="mdi-format-align-left"></v-btn>
+            <v-btn size="small" icon="mdi-format-align-center"></v-btn>
+            <v-btn size="small" icon="mdi-format-align-right"></v-btn>
+            <v-btn size="small" icon="mdi-format-align-justify"></v-btn>
+          </v-btn-toggle>
+        </v-col>
+        <v-col class="center icons">
+          <label :class="store.config.styles.mirrorX ? 'selected' : ''">
+            <v-icon icon="mdi-flip-horizontal"></v-icon>
+            <input type="checkbox" v-model="store.config.styles.mirrorX" style="display: none;">
+          </label>
+          <label :class="store.config.styles.mirrorY ? 'selected' : ''">
+            <v-icon icon="mdi-flip-vertical"></v-icon>
+            <input type="checkbox" v-model="store.config.styles.mirrorY" style="display: none;">
+          </label>
+          <Settings></Settings>
+        </v-col>
+      </v-row>
     </v-container>
     <div>
-        <v-range-slider v-model="store.config.styles.margin" @end="symmetrize()" min="0" max="100" step="1" hide-details></v-range-slider>
+      <v-range-slider v-model="store.config.styles.margin" @end="symmetrize()" min="0" max="100" step="1"
+        hide-details></v-range-slider>
     </div>
   </div>
 </template>
 
 <style scoped>
-
 .selected {
   color: rgb(129, 173, 240);
 }
 
-.fontFamily{
+.fontFamily {
   min-width: 10em;
 }
 
-.textSize{
+.textSize {
   min-width: 7em;
 }
 
-.colorPicker{
+.colorPicker {
   min-width: 13em;
 }
 
-.lineSpacing{
+.lineSpacing {
   min-width: 7em;
 }
 
@@ -161,8 +161,7 @@ const checkAudioConfigErrors = async () => {
   padding: .2em .4em;
 }
 
-.icons{
+.icons {
   gap: .7em;
 }
-
 </style>

@@ -15,7 +15,7 @@
                         @click="downloadConfig.content = (downloadConfig.content !== type.title) ? type.title : null">
                         <div class="down-btn" :class="(type.title === downloadConfig.content) ? 'selected' : ''">
                             <v-row>
-                                <v-img class="ma-2" :src="`src/assets/editor-assets/download-types/${type.img}`"></v-img>
+                                <v-img class="ma-6" :src="`editor-assets/download-types/${type.img}`"></v-img>
                             </v-row>
                             <v-row>
                                 <p class="w-100 text-center text-no-wrap card-text">{{ type.title }}</p>
@@ -29,7 +29,7 @@
                         @click="downloadConfig.type = (downloadConfig.type !== type.title) ? type.title : null">
                         <div class="down-btn" :class="(type.title === downloadConfig.type) ? 'selected' : ''">
                             <v-row>
-                                <v-img class="ma-2" :src="`src/assets/editor-assets/download-formats/${type.img}`"></v-img>
+                                <v-img class="ma-6" :src="`editor-assets/download-formats/${type.img}`"></v-img>
                             </v-row>
                             <v-row>
                                 <p class="w-100 text-center text-no-wrap card-text">{{ type.title }}</p>
@@ -38,7 +38,9 @@
                     </v-col>
                 </v-row>
                 <v-text-field class="mt-4" v-model="downloadConfig.name" label="Nombre del fichero"></v-text-field>
-                <v-btn color="primary" block :disabled="!(downloadConfig.content && downloadConfig.type && downloadConfig.name !== '')" @click="download()">Descargar</v-btn>
+                <v-btn color="primary" block
+                    :disabled="!(downloadConfig.content && downloadConfig.type && downloadConfig.name !== '')"
+                    @click="download()">Descargar</v-btn>
             </v-card-text>
         </v-card>
     </v-dialog>
@@ -61,7 +63,7 @@ const downloadConfig = ref({
 
 const download = () => {
     try {
-        let file 
+        let file
         switch (downloadConfig.value.type) {
             case 'Json':
                 let data = { ...store }
@@ -81,16 +83,16 @@ const download = () => {
                 break;
             case 'Markdown':
                 let md = ''
-                if(downloadConfig.value.content === 'Configuración' || downloadConfig.value.content === 'Ambos'){
+                if (downloadConfig.value.content === 'Configuración' || downloadConfig.value.content === 'Ambos') {
                     md += '---\n'
                     md += JSON.stringify(store.config)
                     md += '\n---\n'
                 }
-                if(downloadConfig.value.content === 'Contenido' || downloadConfig.value.content === 'Ambos'){
+                if (downloadConfig.value.content === 'Contenido' || downloadConfig.value.content === 'Ambos') {
                     store.contents.forEach(content => {
-                        if(content.type === 'image'){
+                        if (content.type === 'image') {
                             md += `![Imagen](${content.data})`
-                        }else if(content.type === 'text'){
+                        } else if (content.type === 'text') {
                             md += content.data
                         }
                         md += '\n___\n'
@@ -147,7 +149,7 @@ const downloadContent = [
     padding: 1em;
     border-radius: .6em;
     border: solid 2px black;
-    
+
 
     &:hover {
         cursor: pointer;
@@ -159,9 +161,8 @@ const downloadContent = [
 }
 
 @media (max-width: 600px) {
-  .card-text {
-    font-size: 11px;
-  }
+    .card-text {
+        font-size: 11px;
+    }
 }
-
 </style>

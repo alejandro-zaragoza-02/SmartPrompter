@@ -78,13 +78,13 @@ const initVoiceRecognition = () => {
   recognition.maxAlternatives = 1
   let grammarWords = ''
   store.contents.forEach(content => {
-    if(content.type === 'text'){
+    if (content.type === 'text') {
       content.data.split(' ').forEach(word => {
-        grammarWords += word.replace(/[^a-zA-Z0-9\u00C0-\u00FF]/g,'') + ' - '
+        grammarWords += word.replace(/[^a-zA-Z0-9\u00C0-\u00FF]/g, '') + ' - '
       })
     }
   })
-  if(grammarWords !== ''){
+  if (grammarWords !== '') {
     grammarWords = grammarWords.substring(0, grammarWords.length - 3)
     var speechRecognitionList = new webkitSpeechGrammarList()
     var grammar = '#JSGF V1.0; grammar palabras; public <palabra> = ' + grammarWords + ' ;'
@@ -95,21 +95,21 @@ const initVoiceRecognition = () => {
 
   let lastTranscription = ''
 
-  recognition.onresult = function(event) {
-    if(!event.results[0].isFinal){
+  recognition.onresult = function (event) {
+    if (!event.results[0].isFinal) {
       let transcription = event.results[0][0].transcript
       let text = transcription.replace(lastTranscription, '')
       lastTranscription = transcription
       let words = text.split(' ')
       checkText(words)
-      
-    }else{
+
+    } else {
       //console.log('Final: ', event.results[0][0].transcript)
       // Corregir palabras anteriores
     }
   }
 
-  recognition.onend = function(event) {
+  recognition.onend = function (event) {
     recognition.start()
   }
 }
@@ -119,10 +119,10 @@ const checkText = async (words) => {
   let wordsLeft = []
   let maxWindow = store.config.voice.wordWindow
   for (let iWordTarget = 0; iWordTarget < maxWindow; iWordTarget++) {
-    if(found) return
+    if (found) return
     const wordTarget = getWord(iWordTarget)
     console.log(player.pointer, wordTarget)
-    if(wordTarget.length < 3){
+    if (wordTarget.length < 3) {
       maxWindow++
       continue
     }
@@ -131,7 +131,7 @@ const checkText = async (words) => {
         console.log(wordListen, wordTarget, checkWord(wordListen, wordTarget))
         player.lastWordSaid = wordListen
         setTimeout(() => {
-          if(player.lastWordSaid === wordListen){
+          if (player.lastWordSaid === wordListen) {
             player.lastWordSaid = '...Silencio...'
           }
         }, 1500)
@@ -146,7 +146,7 @@ const checkText = async (words) => {
       }
     })
   }
-  if(wordsLeft.length > 0){
+  if (wordsLeft.length > 0) {
     checkText(wordsLeft)
   }
 }
@@ -157,10 +157,10 @@ const paintWord = () => {
   span.classList.add('said')
   const scrollContainer = document.getElementById('scrollContainer')
   if (!scrollContainer) return
-  if(player.lastWordPosition === 0){
+  if (player.lastWordPosition === 0) {
     player.lastWordPosition = span.getBoundingClientRect().y + (span.getBoundingClientRect().height / 2)
   }
-  if(span.getBoundingClientRect().y !== player.lastWordPosition){
+  if (span.getBoundingClientRect().y !== player.lastWordPosition) {
     console.log(span.getBoundingClientRect().top - player.lastWordPosition)
     scrollContainer.scrollTop += span.getBoundingClientRect().top - player.lastWordPosition
     player.lastWordPosition = span.getBoundingClientRect().y
@@ -171,13 +171,13 @@ const getWord = (amount) => {
   const wordsInParragraph = store.contents[player.pointer.parragraph].data.split(' ').length
   const difference = player.pointer.word + amount - wordsInParragraph
   const newPointer = { ...player.pointer };
-  if(difference >= 0){
+  if (difference >= 0) {
     newPointer.parragraph = nextParragraph()
     newPointer.word = difference
-  }else{
+  } else {
     newPointer.word += amount
   }
-  const wordWanted = store.contents[newPointer.parragraph].data.split(' ')[newPointer.word].replace(/[^a-zA-Z0-9\u00C0-\u00FF]/g,'').toUpperCase()
+  const wordWanted = store.contents[newPointer.parragraph].data.split(' ')[newPointer.word].replace(/[^a-zA-Z0-9\u00C0-\u00FF]/g, '').toUpperCase()
   return wordWanted
 }
 
@@ -185,18 +185,18 @@ const nextPointer = (amount = 1) => {
   const wordsInParragraph = store.contents[player.pointer.parragraph].data.split(' ').length
   const difference = player.pointer.word + amount - wordsInParragraph
   console.log('dif: ', difference)
-  if(difference >= 0){
+  if (difference >= 0) {
     player.pointer.parragraph = nextParragraph()
     player.pointer.word = difference
-  }else{
+  } else {
     player.pointer.word += amount
   }
 }
 
 const nextParragraph = () => {
   let i = player.pointer.parragraph + 1
-  while(i < store.contents.length){
-    if(store.contents[i].type === 'text'){
+  while (i < store.contents.length) {
+    if (store.contents[i].type === 'text') {
       return i
     }
     const img = document.getElementById(`img-${i}`)
@@ -207,24 +207,24 @@ const nextParragraph = () => {
 }
 
 const checkWord = (wordListen, wordWanted) => {
-  wordListen = wordListen.replace(/[^a-zA-Z0-9\u00C0-\u00FF]/g,'').toUpperCase()
+  wordListen = wordListen.replace(/[^a-zA-Z0-9\u00C0-\u00FF]/g, '').toUpperCase()
   return levenshtein(wordListen, wordWanted) <= Math.ceil(wordWanted.length / ((0.6 - store.config.voice.recognitionThreshold) * 10))
 }
 
 
 const levenshtein = (a, b) => {
-      var t = [], u, i, j, m = a.length, n = b.length;
-      if (!m) { return n; }
-      if (!n) { return m; }
-      for (j = 0; j <= n; j++) { t[j] = j; }
-      for (i = 1; i <= m; i++) {
-        for (u = [i], j = 1; j <= n; j++) {
-          u[j] = a[i-1] === b[j-1] ? t[j-1] : Math.min(t[j-1], t[j], u[j-1]) + 1;
-        } 
-        t = u;
-      }
-      return t[n];
+  var t = [], u, i, j, m = a.length, n = b.length;
+  if (!m) { return n; }
+  if (!n) { return m; }
+  for (j = 0; j <= n; j++) { t[j] = j; }
+  for (i = 1; i <= m; i++) {
+    for (u = [i], j = 1; j <= n; j++) {
+      u[j] = a[i - 1] === b[j - 1] ? t[j - 1] : Math.min(t[j - 1], t[j], u[j - 1]) + 1;
     }
+    t = u;
+  }
+  return t[n];
+}
 
 const startModeContinuos = () => {
   const scrollContainer = document.getElementById('scrollContainer')
@@ -242,7 +242,7 @@ const startModeContinuos = () => {
   }
 }
 onMounted(() => {
-  if(store.config.styles.mode === 'Diapositivas'){
+  if (store.config.styles.mode === 'Diapositivas') {
     router.push('/slider')
   }
   player.restart()
@@ -252,7 +252,7 @@ onMounted(() => {
 onUnmounted(() => {
   console.log('Unmounted')
   player.restart()
-  if(recognition){
+  if (recognition) {
     recognition.onend = null
     recognition.stop()
     recognition = null
@@ -272,7 +272,7 @@ onUnmounted(() => {
       lineHeight: store.config.styles.lineSpacing,
       color: store.config.styles.textColor,
       transform: `scale(${getFlipX()},${getFlipY()})`,
-      fontFamily: store.config.styles.fontFamily,
+      fontFamily: store.config.styles.fontFamily + ', sans-serif',
       paddingInline: store.config.styles.margin[0] + '%',
     }">
       <div v-for="(content, cIndex) in store.contents" :key="content.data">
@@ -293,9 +293,7 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-
-.said{
+.said {
   opacity: 0.5;
 }
-
 </style>
