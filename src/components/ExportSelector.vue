@@ -84,9 +84,28 @@ const download = () => {
             case 'Markdown':
                 let md = ''
                 if (downloadConfig.value.content === 'Configuración' || downloadConfig.value.content === 'Ambos') {
-                    md += '---\n'
-                    md += JSON.stringify(store.config)
-                    md += '\n---\n'
+                    md += '---'
+                    md += '\nConfig:'
+                    md += '\nMode: ' + store.config.styles.mode
+                    md += '\nSpeed: ' + store.config.styles.speed
+                    md += '\nBackgroundColor: ' + store.config.styles.backgroundColor
+                    md += '\nTextColor: ' + store.config.styles.textColor
+                    md += '\nFontFamily: ' + store.config.styles.fontFamily
+                    md += '\nFontSize: ' + store.config.styles.fontSize
+                    md += '\nLineSpacing: ' + store.config.styles.lineSpacing
+                    md += '\nMargin: ' + store.config.styles.margin
+                    md += '\nMirror(X): ' + store.config.styles.mirrorX
+                    md += '\nMirror(Y): ' + store.config.styles.mirrorY
+                    md += '\nTextJustify: ' + store.config.styles.textJustify
+                    md += '\nRecognitionThreshold: ' + store.config.voice.recognitionThreshold
+                    md += '\nVoiceRecorder: ' + store.config.voice.recordVoice
+                    md += '\nWordWindow: ' + store.config.voice.wordWindow
+                    md += '\nVoiceCommandsContinuousPlay: ' + store.config.voice.voiceCommands.Continuo.play
+                    md += '\nVoiceCommandsContinuousPause: ' + store.config.voice.voiceCommands.Continuo.pause
+                    md += '\nVoiceCommandsContinuousRestart: ' + store.config.voice.voiceCommands.Continuo.restart
+                    md += '\nVoiceCommandsSliderNext: ' + store.config.voice.voiceCommands.Dispositivas.next
+                    md += '\nVoiceCommandsSliderBack: ' + store.config.voice.voiceCommands.Dispositivas.back
+                    md += '\---\n'
                 }
                 if (downloadConfig.value.content === 'Contenido' || downloadConfig.value.content === 'Ambos') {
                     store.contents.forEach(content => {
@@ -95,7 +114,7 @@ const download = () => {
                         } else if (content.type === 'text') {
                             md += content.data
                         }
-                        md += '\n___\n'
+                        md += '\---\n'
                     })
                 }
                 file = new Blob([md], { type: 'text/plain' })

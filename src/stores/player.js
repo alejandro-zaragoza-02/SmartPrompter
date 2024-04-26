@@ -8,6 +8,7 @@ export const usePlayerStore = defineStore('player', () => {
     parragraph: 0,
     word: 0
   })
+  const slide = ref(0)
   const timeIntervalId = ref(0)
 
   const lastWordSaid = ref('Escuchando...')
@@ -28,6 +29,7 @@ export const usePlayerStore = defineStore('player', () => {
     play,
     reset,
     pointer,
+    slide,
     timeIntervalId,
     lastWordSaid,
     lastWordPosition,

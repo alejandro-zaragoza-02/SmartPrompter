@@ -1,7 +1,3 @@
-<script setup>
-
-</script>
-
 <template>
   <header class="bg-grey-darken-3 header">
     <v-col cols="4" class="text-left d-flex align-center" @click="$router.push('/')">
@@ -13,13 +9,13 @@
     </v-col>
     <v-col cols="4" class="text-right">
       <v-btn @click="$router.push('/')" variant="plain" icon="mdi-arrow-left"></v-btn>
-      <v-btn @click="$router.push('/styler')" variant="plain" icon="mdi-arrow-right" density="comfortable" class="ml-2"></v-btn>
+      <v-btn @click="$router.push('/styler')" variant="plain" icon="mdi-arrow-right" density="comfortable"
+        class="ml-2"></v-btn>
     </v-col>
   </header>
 </template>
 
 <style scoped>
-
 header {
   display: flex;
   flex-direction: row;
@@ -27,5 +23,4 @@ header {
   flex-wrap: wrap;
   margin-bottom: .3em;
 }
-
 </style>

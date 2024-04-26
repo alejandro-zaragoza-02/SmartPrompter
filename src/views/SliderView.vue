@@ -64,17 +64,17 @@ let getFlipY = () => { return (store.config.styles.mirrorY ? -1 : 1) }
       paddingInline: store.config.styles.margin[0] + '%',
       minHeight: '100%',
     }">
-      <div v-if="store.contents[store.config.styles.slide].type === 'text'">
-        <p v-for="parragraph in store.contents[store.config.styles.slide].data.split('\n')">
+      <div v-if="store.contents[player.slide].type === 'text'">
+        <p v-for="parragraph in store.contents[player.slide].data.split('\n')">
           <template v-for="(word, wIndex) in parragraph.split(' ')">
-            <span :id="`word-${store.config.styles.slide}-${wIndex}`">{{ word }}</span>{{ ' ' }}
+            <span :id="`word-${player.slide}-${wIndex}`">{{ word }}</span>{{ ' ' }}
           </template>
           <br>
         </p>
       </div>
-      <v-img v-if="store.contents[store.config.styles.slide].type === 'image'"
-        :width="`${store.contents[store.config.styles.slide].config.width}%`" :id="`img-${store.config.styles.slide}`"
-        :src="store.contents[store.config.styles.slide].data" :style="{ margin: getAligImg() }"></v-img>
+      <v-img v-if="store.contents[player.slide].type === 'image'"
+        :width="`${store.contents[player.slide].config.width}%`" :id="`img-${player.slide}`"
+        :src="store.contents[player.slide].data" :style="{ margin: getAligImg() }"></v-img>
     </div>
   </main>
 </template>

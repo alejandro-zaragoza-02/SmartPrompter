@@ -66,7 +66,7 @@ const loadAudio = () => {
             <v-text-field label="Nombre del fichero" placeholder="audio" v-model="fileName"></v-text-field>
           </v-col>
           <v-col cols="12" sm="3">
-            <v-select label="Extensión" :items="['WAV', 'OGG', 'MPEG']" v-model="fileExtension"></v-select>
+            <v-select label="Formato" :items="['WAV', 'OGG', 'MPEG']" v-model="fileExtension"></v-select>
           </v-col>
         </v-row>
       </v-card-text>

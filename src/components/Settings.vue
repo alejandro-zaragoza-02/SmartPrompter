@@ -58,23 +58,142 @@ const importFile = (evt) => {
           if (input.files[0].name.endsWith('.md')) {
             console.log(e.target.result)
             let contents = []
-            let data = e.target.result.split('___')
+            let config = {}
+            let data = e.target.result.split('---')
             data = data.slice(0, data.length - 1)
             data.forEach(content => {
-              if (content.includes('![Imagen]')) {
-                contents.push({
-                  type: 'image',
-                  data: content.slice(11, content.length - 2),
-                  config: {
-                    width: 10
+              if (!content) return
+              console.log(content)
+              if (content.substr(0, 12).includes('Config:')) {
+                const settings = content.split('\n').filter((line) => line && line !== 'Config:')
+                settings.forEach(setting => {
+                  const directive = setting.split(':')[0]
+                  const value = setting.split(':')[1].replace(' ', '')
+                  switch (directive.toLowerCase()) {
+                    case 'mode':
+                      if (value === 'Continuo' || value === 'Dispositivas' || value === 'Inteligente') {
+                        store.config.styles.mode = value
+                      }
+                      break;
+                    case 'speed':
+                      if (Number(value) > 0 && Number(value) < 100) {
+                        store.config.styles.speed = Number(value)
+                      }
+                      break;
+                    case 'backgroundcolor':
+                      const regexBG = "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$";
+                      if (value.match(regexBG)) {
+                        store.config.styles.backgroundColor = value
+                      }
+                      break;
+                    case 'textcolor':
+                      const regexTC = "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$";
+                      if (value.match(regexTC)) {
+                        store.config.styles.textColor = value
+                      }
+                      break;
+                    case 'fontfamily':
+                      if (['arimo', 'quicksand', 'kanit', 'merriweather', 'nunito', 'oswald', 'monserrat', 'opensans', 'roboto'].includes(value.toLowerCase())) {
+                        store.config.styles.fontFamily = value
+                      }
+                      break;
+                    case 'fontsize':
+                      if (Number(value) > 0 && Number(value) < 150) {
+                        store.config.styles.fontSize = Number(value)
+                      }
+                      break;
+                    case 'linespacing':
+                      if (Number(value) > 0 && Number(value) < 10) {
+                        store.config.styles.lineSpacing = Number(value)
+                      }
+                      break;
+                    case 'margin':
+                      const valuesM = value.replace(' ', '').split(',')
+                      if (valuesM.length === 2 && Number(valuesM[0]) > 0 && Number(valuesM[0]) < Number(valuesM[1]) && Number(valuesM[1]) < 100) {
+                        store.config.styles.margin = [Number(valuesM[0]), Number(valuesM[1])]
+                      }
+                      break;
+                    case 'mirror(x)':
+                      if (['true', 'false'].includes(value)) {
+                        store.config.styles.mirrorX = (value === 'true') ? true : false
+                      }
+                      break;
+                    case 'mirror(y)':
+                      if (['true', 'false'].includes(value)) {
+                        store.config.styles.mirrorY = (value === 'true') ? true : false
+                      }
+                      break;
+                    case 'textjustify':
+                      if ([0, 1, 2, 3].includes(Number(value))) {
+                        store.config.styles.textJustify = Number(value)
+                      }
+                      break;
+                    case 'recognitionthreshold':
+                      if (Number(value) > 0 && Number(value) <= 0.5) {
+                        store.config.voice.recognitionThreshold = Number(value)
+                      }
+                      break;
+                    case 'voicerecorder':
+                      if (['true', 'false'].includes(value)) {
+                        store.config.voice.recordVoice = (value === 'true') ? true : false
+                      }
+                      break;
+                    case 'wordwindow':
+                      if (Number(value) > 0 && Number(value) <= 9) {
+                        store.config.voice.wordWindow = Number(value)
+                      }
+                      break;
+                    case 'voicecommandscontinuousplay':
+                      const valuesVCPlay = value.replace(' ', '').split(',')
+                      if (valuesVCPlay[0] && valuesVCPlay[1]) {
+                        store.config.voice.voiceCommands.Continuo.play = [valuesVCPlay[0], valuesVCPlay[1]]
+                      }
+                      break;
+                    case 'voicecommandscontinuouspause':
+                      const valuesVCPause = value.replace(' ', '').split(',')
+                      if (valuesVCPause[0] && valuesVCPause[1]) {
+                        store.config.voice.voiceCommands.Continuo.pause = [valuesVCPause[0], valuesVCPause[1]]
+                      }
+                      break;
+                    case 'voicecommandscontinuousrestart':
+                      const valuesVCRestart = value.replace(' ', '').split(',')
+                      if (valuesVCRestart[0] && valuesVCRestart[1]) {
+                        store.config.voice.voiceCommands.Continuo.restart = [valuesVCRestart[0], valuesVCRestart[1]]
+                      }
+                      break;
+                    case 'voicecommandsslidernext':
+                      const valuesVCNext = value.replace(' ', '').split(',')
+                      if (valuesVCNext[0] && valuesVCNext[1]) {
+                        store.config.voice.voiceCommands.Dispositivas.next = [valuesVCNext[0], valuesVCNext[1]]
+                      }
+                      break;
+                    case 'voicecommandssliderback':
+                      const valuesVCBack = value.replace(' ', '').split(',')
+                      if (valuesVCBack[0] && valuesVCBack[1]) {
+                        store.config.voice.voiceCommands.Dispositivas.back = [valuesVCBack[0], valuesVCBack[1]]
+                      }
+                      break;
+                    default:
+                      break;
                   }
                 })
               } else {
-                contents.push({
-                  type: 'text',
-                  data: content
-                })
+                if (content.includes('![Imagen]')) {
+                  contents.push({
+                    type: 'image',
+                    data: content.slice(11, content.length - 2),
+                    config: {
+                      width: 10
+                    }
+                  })
+                } else {
+                  contents.push({
+                    type: 'text',
+                    data: content
+                  })
+                }
               }
+
             })
             store.contents = contents
           } else {
@@ -90,6 +209,7 @@ const importFile = (evt) => {
       snackbar.value.color = 'green'
       snackbar.value.icon = 'mdi-check-circle-outline'
     } catch (error) {
+      console.log(error)
       snackbar.value.value = true
       snackbar.value.text = 'Error. No se pudo importar el fichero.'
       snackbar.value.color = 'red'

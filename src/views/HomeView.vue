@@ -1,9 +1,7 @@
 <script setup>
 import { useConfigStore } from '@/stores/config';
-import { ref, provide } from 'vue';
 
 const store = useConfigStore()
-const mode = ref('Continuo')
 
 const cardsInfo = [
   {

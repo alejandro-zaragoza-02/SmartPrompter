@@ -35,14 +35,12 @@ export const useConfigStore = defineStore('config', () => {
       textJustify: ref(0),
       mirrorY: ref(false),
       mirrorX: ref(false),
-      margin: ref([10, 90]),
-      slide: ref(0)
+      margin: ref([10, 90])
     },
     voice: {
       lang: ref('es-ES'),
       micro: ref('default'),
       recordVoice: ref(true),
-      voiceSync: ref(false),
       recognitionThreshold: ref(0.3),
       wordWindow: ref(5),
       voiceCommands: ref({

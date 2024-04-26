@@ -32,7 +32,7 @@ const removeItem = (index) => {
 
 const openFileExplorer = (index) => {
   const fileInput = document.getElementById(`inpFile-${index}`);
-  if(fileInput){
+  if (fileInput) {
     fileInput.click();
   }
 }
@@ -46,10 +46,6 @@ const changeImage = (index) => {
     }
     reader.readAsDataURL(input.files[0]);
   }
-}
-
-const editSizeImage = (index, width) => {
-  store.contents[index].config.width = width
 }
 
 </script>
@@ -71,7 +67,8 @@ const editSizeImage = (index, width) => {
               @change="changeImage(index)">
           </div>
           <div class="d-flex flex-column">
-            <v-icon v-if="store.contents[index].type === 'image'" class="mx-2" icon="mdi-cog" @click="imgConfigDialog = true; lastImgConfigClicked = index;"></v-icon>
+            <v-icon v-if="store.contents[index].type === 'image'" class="mx-2" icon="mdi-cog"
+              @click="imgConfigDialog = true; lastImgConfigClicked = index;"></v-icon>
             <v-icon class="mx-2" icon="mdi-close" @click="removeItem(index)"></v-icon>
           </div>
         </li>
@@ -82,31 +79,21 @@ const editSizeImage = (index, width) => {
       <v-btn prepend-icon="mdi-image" class="ma-2" @click="addImage()">Añadir imagen</v-btn>
     </div>
   </main>
-  <v-dialog
-      v-model="imgConfigDialog"
-      max-width="600"
-    >
-      <v-card>
-        <v-card-title class="bg-blue-lighten-5">Configurar imagen</v-card-title>
-        <v-card-text>
-          <v-slider
-            v-model="store.contents[lastImgConfigClicked].config.width"
-            label="Ancho"
-            min="1"
-            max="100"
-            step="1"
-            thumb-label
-          ></v-slider>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn block @click="imgConfigDialog = false">Cerrar</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+  <v-dialog v-model="imgConfigDialog" max-width="600">
+    <v-card>
+      <v-card-title class="bg-blue-lighten-5">Configurar imagen</v-card-title>
+      <v-card-text>
+        <v-slider v-model="store.contents[lastImgConfigClicked].config.width" label="Ancho" min="1" max="100" step="1"
+          thumb-label></v-slider>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn block @click="imgConfigDialog = false">Cerrar</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <style scoped>
-
 li {
   list-style: none;
 }
@@ -119,5 +106,4 @@ li {
   border: solid 1px #202020;
   border-radius: .3em;
 }
-
 </style>
