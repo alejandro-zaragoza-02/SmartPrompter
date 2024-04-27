@@ -3,10 +3,12 @@ import { ref } from 'vue';
 import languages from '../helpers/getLanguages.js'
 import { useConfigStore } from '@/stores/config';
 import ExportSelector from '@/components/ExportSelector.vue'
+import getLanguages from '../helpers/getLanguages.js';
 
 const store = useConfigStore()
 
 const dialog = ref(false)
+const confirmDialog = ref(false)
 const mode = ref(store.config.styles.mode)
 const speed = ref(store.config.styles.speed)
 const error = ref(store.config.voice.recognitionThreshold)
@@ -58,7 +60,6 @@ const importFile = (evt) => {
           if (input.files[0].name.endsWith('.md')) {
             console.log(e.target.result)
             let contents = []
-            let config = {}
             let data = e.target.result.split('---')
             data = data.slice(0, data.length - 1)
             data.forEach(content => {
@@ -71,13 +72,14 @@ const importFile = (evt) => {
                   const value = setting.split(':')[1].replace(' ', '')
                   switch (directive.toLowerCase()) {
                     case 'mode':
-                      if (value === 'Continuo' || value === 'Dispositivas' || value === 'Inteligente') {
-                        store.config.styles.mode = value
+                      console.log(value)
+                      if (value === 'Continuo' || value === 'Diapositivas' || value === 'Inteligente') {
+                        mode.value = value
                       }
                       break;
                     case 'speed':
                       if (Number(value) > 0 && Number(value) < 100) {
-                        store.config.styles.speed = Number(value)
+                        speed.value = Number(value)
                       }
                       break;
                     case 'backgroundcolor':
@@ -128,49 +130,56 @@ const importFile = (evt) => {
                         store.config.styles.textJustify = Number(value)
                       }
                       break;
+                    case 'lang':
+                      if (getLanguages.some(lang => {
+                        return lang.code === value
+                      })) {
+                        lang.value = value
+                      }
+                      break;
                     case 'recognitionthreshold':
                       if (Number(value) > 0 && Number(value) <= 0.5) {
-                        store.config.voice.recognitionThreshold = Number(value)
+                        error.value = Number(value)
                       }
                       break;
                     case 'voicerecorder':
                       if (['true', 'false'].includes(value)) {
-                        store.config.voice.recordVoice = (value === 'true') ? true : false
+                        audio.value = (value === 'true') ? true : false
                       }
                       break;
                     case 'wordwindow':
                       if (Number(value) > 0 && Number(value) <= 9) {
-                        store.config.voice.wordWindow = Number(value)
+                        window.value = Number(value)
                       }
                       break;
                     case 'voicecommandscontinuousplay':
                       const valuesVCPlay = value.replace(' ', '').split(',')
                       if (valuesVCPlay[0] && valuesVCPlay[1]) {
-                        store.config.voice.voiceCommands.Continuo.play = [valuesVCPlay[0], valuesVCPlay[1]]
+                        commands.value.Continuo.play = [valuesVCPlay[0], valuesVCPlay[1]]
                       }
                       break;
                     case 'voicecommandscontinuouspause':
                       const valuesVCPause = value.replace(' ', '').split(',')
                       if (valuesVCPause[0] && valuesVCPause[1]) {
-                        store.config.voice.voiceCommands.Continuo.pause = [valuesVCPause[0], valuesVCPause[1]]
+                        commands.value.Continuo.pause = [valuesVCPause[0], valuesVCPause[1]]
                       }
                       break;
                     case 'voicecommandscontinuousrestart':
                       const valuesVCRestart = value.replace(' ', '').split(',')
                       if (valuesVCRestart[0] && valuesVCRestart[1]) {
-                        store.config.voice.voiceCommands.Continuo.restart = [valuesVCRestart[0], valuesVCRestart[1]]
+                        commands.value.Continuo.restart = [valuesVCRestart[0], valuesVCRestart[1]]
                       }
                       break;
                     case 'voicecommandsslidernext':
                       const valuesVCNext = value.replace(' ', '').split(',')
                       if (valuesVCNext[0] && valuesVCNext[1]) {
-                        store.config.voice.voiceCommands.Dispositivas.next = [valuesVCNext[0], valuesVCNext[1]]
+                        commands.value.Dispositivas.next = [valuesVCNext[0], valuesVCNext[1]]
                       }
                       break;
                     case 'voicecommandssliderback':
                       const valuesVCBack = value.replace(' ', '').split(',')
                       if (valuesVCBack[0] && valuesVCBack[1]) {
-                        store.config.voice.voiceCommands.Dispositivas.back = [valuesVCBack[0], valuesVCBack[1]]
+                        commands.value.Dispositivas.back = [valuesVCBack[0], valuesVCBack[1]]
                       }
                       break;
                     default:
@@ -220,14 +229,30 @@ const importFile = (evt) => {
 }
 
 const saveConfig = () => {
-  store.config.styles.mode = mode
-  store.config.styles.speed = speed
-  store.config.voice.recognitionThreshold = error
-  store.config.voice.wordWindow = window
-  store.config.voice.micro = micro
-  store.config.voice.lang = lang
-  store.config.voice.recordVoice = audio
-  store.config.voice.voiceCommands = commands
+  store.config.styles.mode = mode.value
+  store.config.styles.speed = speed.value
+  store.config.voice.recognitionThreshold = error.value
+  store.config.voice.wordWindow = window.value
+  store.config.voice.micro = micro.value
+  store.config.voice.lang = lang.value
+  store.config.voice.recordVoice = audio.value
+  store.config.voice.voiceCommands = commands.value
+
+  confirmDialog.value = false
+  dialog.value = false
+}
+
+const resetConfig = () => {
+  mode.value = store.config.styles.mode
+  speed.value = store.config.styles.speed
+  error.value = store.config.voice.recognitionThreshold
+  window.value = store.config.voice.wordWindow
+  micro.value = store.config.voice.micro
+  lang.value = store.config.voice.lang
+  audio.value = store.config.voice.recordVoice
+  commands.value = store.config.voice.voiceCommands
+
+  confirmDialog.value = false
   dialog.value = false
 }
 
@@ -242,7 +267,7 @@ const saveConfig = () => {
 
       <v-card>
         <v-toolbar>
-          <v-btn icon="mdi-close" @click="dialog = false"></v-btn>
+          <v-btn icon="mdi-close" @click="confirmDialog = true"></v-btn>
           <v-toolbar-title>Congifuración</v-toolbar-title>
           <v-toolbar-items>
             <v-btn text="Guardar" variant="text" @click="saveConfig()"></v-btn>
@@ -335,6 +360,22 @@ const saveConfig = () => {
                 class="mr-2"></v-icon>{{ snackbar.text }}</v-snackbar>
           </v-row>
         </v-list>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="confirmDialog">
+      <v-card class="v-container">
+        <div class="text-center mb-8">
+          <v-card-title>Los ajustes no se guardarán.</v-card-title>
+          <v-card-subtitle>¿Estás seguro de que deseas salir?</v-card-subtitle>
+        </div>
+        <v-card-actions class="d-flex flex-sm-row flex-column justify-end ga-2 flex-grow-1 flex-sm-grow-0">
+          <v-btn @click="confirmDialog = false;" color="secundary" variant="text" class="px-6"
+            prepend-icon="mdi-close">Cancelar</v-btn>
+          <v-btn @click="saveConfig()" color="green-lighten-1" variant="flat" prepend-icon="mdi-check"
+            class="px-6">Guardar</v-btn>
+          <v-btn @click="resetConfig()" color="red-lighten-1" variant="flat" prepend-icon="mdi-exit-to-app"
+            class="px-6">Salir</v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>

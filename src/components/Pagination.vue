@@ -11,9 +11,11 @@
 <script setup>
 
 import { useConfigStore } from '@/stores/config'
+import { usePlayerStore } from '@/stores/player';
 import { onMounted, onUnmounted } from 'vue';
 
 const store = useConfigStore()
+const player = usePlayerStore()
 
 const handleKeydown = (event) => {
   const keyName = event.key;

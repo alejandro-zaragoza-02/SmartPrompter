@@ -97,6 +97,7 @@ const download = () => {
                     md += '\nMirror(X): ' + store.config.styles.mirrorX
                     md += '\nMirror(Y): ' + store.config.styles.mirrorY
                     md += '\nTextJustify: ' + store.config.styles.textJustify
+                    md += '\nLang: ' + store.config.voice.lang
                     md += '\nRecognitionThreshold: ' + store.config.voice.recognitionThreshold
                     md += '\nVoiceRecorder: ' + store.config.voice.recordVoice
                     md += '\nWordWindow: ' + store.config.voice.wordWindow
